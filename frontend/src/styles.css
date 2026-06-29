@@ -33,7 +33,7 @@ button {
   cursor: pointer;
 }
 
-button:last-child {
+button.primaryButton {
   border-color: #28695c;
   background: #28695c;
   color: #ffffff;
@@ -42,6 +42,12 @@ button:last-child {
 button:disabled {
   cursor: not-allowed;
   opacity: 0.58;
+}
+
+button.primaryButton:disabled {
+  border-color: #aab4b9;
+  background: #dfe5e7;
+  color: #58666d;
 }
 
 .shell {
@@ -431,6 +437,10 @@ h2 {
 .runRow.selected {
   border-color: #28695c;
   background: #ecf6f2;
+}
+
+button.runRow {
+  min-height: 42px;
 }
 
 .runRow span {

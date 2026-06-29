@@ -21,6 +21,7 @@ RUN_STATE_ROOT: Final = ROOT_DIR / "training" / "run_state"
 RUN_OUTPUT_ROOT: Final = ROOT_DIR / "training" / "runs"
 RETRAIN_MODEL_ROOT: Final = ROOT_DIR / "models"
 HF_CANDIDATE_ROOT: Final = Path(r"F:\Ai_Models\hf\posttrain_candidates")
+ANSI_RE: Final = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 METHOD_TO_RUNNER: Final = {
     "sft": "full_sft",
@@ -787,7 +788,9 @@ def read_log_tail(path: Path, limit: int = 4000) -> str:
     if not path.exists():
         return ""
     text = path.read_text(encoding="utf-8", errors="replace")
-    return text[-limit:]
+    cleaned = ANSI_RE.sub("", text).replace("\r", "\n")
+    lines = [line.rstrip() for line in cleaned.splitlines()]
+    return "\n".join(lines)[-limit:]
 
 
 def stop_run(run_id: str) -> dict[str, Any]:

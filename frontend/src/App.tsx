@@ -207,6 +207,8 @@ export function App() {
   const scalarCount = summary?.scalars.length ?? 0;
   const tensorboardReady = tensorboard?.ready ?? health?.tensorboard.running ?? false;
   const embeddedPath = `${API_BASE}${tensorboard?.embeddedPath ?? health?.tensorboard.embeddedPath ?? "/tensorboard/"}`;
+  const canStartRun = Boolean(config && plan?.startEnabled && !busy);
+  const startBlockedReason = plan?.startEnabled === false ? "Resolve readiness gates before starting." : undefined;
 
   const refresh = useCallback(async () => {
     setError(null);
@@ -245,6 +247,16 @@ export function App() {
     }, 250);
     return () => window.clearTimeout(timer);
   }, [config, overview]);
+
+  useEffect(() => {
+    if (!activeRuns) return;
+    const interval = window.setInterval(() => {
+      refresh().catch((caught) => {
+        setError(caught instanceof Error ? caught.message : "Unable to refresh active run.");
+      });
+    }, 4000);
+    return () => window.clearInterval(interval);
+  }, [activeRuns, refresh]);
 
   const updateConfig = <K extends keyof TrainingConfig>(key: K, value: TrainingConfig[K]) => {
     setConfig((current) => (current ? { ...current, [key]: value } : current));
@@ -380,7 +392,7 @@ export function App() {
           <button type="button" onClick={startTensorBoard} disabled={busy}>
             Start TensorBoard
           </button>
-          <button type="button" onClick={() => setTensorboardOpen(true)} disabled={!tensorboardReady}>
+          <button className="primaryButton" type="button" onClick={() => setTensorboardOpen(true)} disabled={!tensorboardReady}>
             Open TensorBoard
           </button>
         </div>
@@ -505,7 +517,7 @@ export function App() {
             <button type="button" onClick={planRun} disabled={busy || !config}>
               Plan
             </button>
-            <button type="button" onClick={startRun} disabled={busy || !config}>
+            <button className="primaryButton" type="button" onClick={startRun} disabled={!canStartRun} title={startBlockedReason}>
               {config?.dryRun ? "Run Dry Check" : "Start Confirmed Run"}
             </button>
           </div>
@@ -569,7 +581,7 @@ export function App() {
                   <button type="button" onClick={stopRun} disabled={busy || !selectedRun || selectedRun.status !== "running"}>
                     Stop
                   </button>
-                  <button type="button" onClick={resumeRun} disabled={busy || !selectedRun}>
+                  <button className="primaryButton" type="button" onClick={resumeRun} disabled={busy || !selectedRun}>
                     Resume
                   </button>
                 </div>
