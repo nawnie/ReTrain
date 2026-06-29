@@ -1,0 +1,34 @@
+{
+  "name": "codex_app_environment",
+  "version": "0.1.0",
+  "generated_on": "2026-06-28",
+  "owner": "Rnv1-ReTrain",
+  "summary": "Training and eval data for teaching a local model how to operate inside Codex with skills, plugins, MCP tools, app connectors, local shell tools, browser tools, and project instructions.",
+  "files": {
+    "source_guide": "sources/codex_app_environment.md",
+    "tool_taxonomy": "sources/codex_tool_taxonomy.json",
+    "skill_inventory_snapshot": "sources/skill_inventory_snapshot.json",
+    "sft": "sft/codex_app_tool_use_sft.jsonl",
+    "eval": "evals/codex_app_tool_use_eval.jsonl"
+  },
+  "counts": {
+    "sft_rows": 16,
+    "eval_rows": 10
+  },
+  "coverage": [
+    "skill loading and progressive disclosure",
+    "plugin and connector discovery",
+    "MCP resources, resource templates, and tools",
+    "local shell and patch discipline",
+    "browser and web verification",
+    "memory citation behavior",
+    "OpenAI docs routing",
+    "plugin install guardrails",
+    "frontend and backend verification",
+    "secrets and privacy guardrails"
+  ],
+  "refresh_commands": [
+    "python datasets/codex_app_environment/scripts/build_skills_snapshot.py",
+    "python datasets/codex_app_environment/scripts/validate_codex_app_dataset.py"
+  ]
+}

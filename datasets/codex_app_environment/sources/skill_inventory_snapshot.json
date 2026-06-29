@@ -1,0 +1,1198 @@
+{
+  "generated_on": "2026-06-28T12:18:53.670617+00:00",
+  "roots": [
+    ".codex/skills",
+    ".codex/plugins/cache"
+  ],
+  "skills": [
+    {
+      "description": "Agent MoK structured planning, research verification, and findings-dataset capture for complex agentic work. Use when Codex needs to create or update plan.md, break work into Atlas lanes/cards, verify request interpretation, tool results, claims, memory/context, and affected project files, and organize searched or found data into per-usage moks findings training datasets. Trigger for planning, verification, double-checking, reducing mistakes, agentic reasoning, tool-use validation, deep research, full-learning, building a mental model, dataset or findings capture, risky edits, refactors, migrations, incident response, debugging, and tool-heavy workflows.",
+      "name": "agent-mok",
+      "path": ".codex/skills/agent-mok/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Build, run, deploy, and evaluate OpenAI Agents SDK apps from Codex. Use when the user asks to create or adapt an Agents SDK app, build from a prompt or Codex thread, prepare a runnable agent prototype, add a focused eval harness, or deploy locally through the Agents SDK Deployment Manager.",
+      "name": "agents-sdk",
+      "path": ".codex/plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/agents-sdk/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build, run, deploy, and evaluate OpenAI Agents SDK apps from Codex. Use when the user asks to create or adapt an Agents SDK app, build from a prompt or Codex thread, prepare a runnable agent prototype, add a focused eval harness, or deploy locally through the Agents SDK Deployment Manager.",
+      "name": "agents-sdk",
+      "path": ".codex/plugins/cache/openai-curated/openai-developers/fef63ecf/skills/agents-sdk/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "|",
+      "name": "aiq-deploy",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/aiq-deploy/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "|",
+      "name": "aiq-research",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/aiq-research/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "AIWF Studio local open-source AI engine, pipeline, AI chat app, AI training, and product research routing skill. Use for work in or about F:\\AIWF_Studio involving image/video/audio generation engines, Diffusers pipelines, Wan, LTX, Qwen Image, Sana, Flux/Z-Image/Klein, AudioCraft, GGUF or safetensors model formats, Hugging Face downloads, Gradio UI wiring, React frontend work, product UX research, local LLM chat code, RAG/chat memory, LLM serving, fine-tuning/training, quantization, attention optimization, local venv/runtime setup, smoke tests, pipeline validation, GitHub-facing writing, or non-gitignored repo file edits. This skill selects the minimal relevant stock skills before acting, and routes GitHub/tracked-file writing through avoid-ai-writing.",
+      "name": "aiwf",
+      "path": ".codex/skills/aiwf/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Coordinate AIWF and MoK local dataset research, curation, validation, and cleanup. Use when sorting daily automated dataset research, validating sources and licenses, cleaning current dataset libraries, generating additive dataset artifacts, planning dataset freshness or media duration gates, curating text/image/video/audio data, captioning multimodal datasets, preparing Data Analytics dashboards or reports, or applying AI-writing guardrails to original research and synthetic guardrail training data.",
+      "name": "aiwf-dataset",
+      "path": ".codex/skills/aiwf-dataset/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit compact AlphaFold Protein Structure Database API requests for prediction, UniProt summary, sequence summary, and annotation lookups. Use when a user wants AlphaFold metadata or concise structure summaries",
+      "name": "alphafold-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/alphafold-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Assess whether structured data, query results, dashboards, or analytical evidence are trustworthy enough to use. Use when the task is to check data quality, reconcile conflicting sources or metric definitions, or decide whether evidence is safe to cite.",
+      "name": "analyze-data-quality",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/analyze-data-quality/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "ATLAS archive maintenance routing skill for work explicitly in or about AIWF - ATLAS, ATLAS archive lanes, retrieval cards, source refreshes, official-document verification, KNOWN_GAPS.md, NOTES_TO_AI.md, or local archive governance. Use when the prompt names ATLAS, an ATLAS checkout path, archive maintenance, lane refresh, source coverage, or stale-claim validation. Do not use for generic research, generic docs, or unrelated AIWF Studio code unless the ATLAS archive is the target.",
+      "name": "atlas",
+      "path": ".codex/skills/atlas/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Audit or critique a product flow, journey, workflow, funnel, onboarding path, checkout path, settings path, screen, or multi-step product experience by capturing screenshots first, placing them in Figma or a local folder, then reporting UX, design, and accessibility findings from that evidence. Use when the user asks to audit, review, critique, inspect, assess, analyze, evaluate, or give feedback on a product experience.",
+      "name": "audit",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/audit/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Audit and rewrite content to remove AI writing patterns (\"AI-isms\"). Use this skill when asked to \"remove AI-isms,\" \"clean up AI writing,\" \"edit writing for AI patterns,\" \"audit writing for AI tells,\" or \"make this sound less like AI.\" Supports a detect-only mode, an edit-in-place mode for files, an optional voice profile (casual / professional / technical / warm / blunt), and an iterate-to-convergence pass.",
+      "name": "avoid-ai-writing",
+      "path": ".codex/skills/avoid-ai-writing/plugins/avoid-ai-writing/skills/avoid-ai-writing/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Audit and rewrite content to remove AI writing patterns (\"AI-isms\"). Use this skill when asked to \"remove AI-isms,\" \"clean up AI writing,\" \"edit writing for AI patterns,\" \"audit writing for AI tells,\" or \"make this sound less like AI.\" Supports a detect-only mode, an edit-in-place mode for files, an optional voice profile (casual / professional / technical / warm / blunt), and an iterate-to-convergence pass.",
+      "name": "avoid-ai-writing",
+      "path": ".codex/skills/avoid-ai-writing/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit compact Bgee SPARQL requests for healthy wild-type expression metadata and ontology-aware lookup patterns. Use when a user wants concise Bgee summaries; save raw results only on request.",
+      "name": "bgee-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/bgee-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact BindingDB REST API requests for ligand-target binding lookups by PDB, UniProt, or similarity search. Use when a user wants concise BindingDB summaries; save raw payloads only on request.",
+      "name": "bindingdb-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/bindingdb-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Fetch compact BioBank Japan PheWAS summaries for single variants by accepting rsID, GRCh38, or GRCh37 input and resolving to the required GRCh37 query. Use when a user wants concise BBJ association results for one variant",
+      "name": "biobankjapan-phewas-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/biobankjapan-phewas-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact bioRxiv and medRxiv API requests for details, publication-linkage, and DOI lookups. Use when a user wants concise preprint metadata summaries",
+      "name": "biorxiv-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/biorxiv-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact BioStudies and ArrayExpress API requests for free-text search and accession-based study retrieval. Use when a user wants concise BioStudies summaries",
+      "name": "biostudies-arrayexpress-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/biostudies-arrayexpress-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build, scaffold, refactor, and troubleshoot ChatGPT Apps SDK applications that combine an MCP server and widget UI. Use when Codex needs to design tools, register UI resources, wire the MCP Apps bridge or ChatGPT compatibility APIs, apply Apps SDK metadata or CSP or domain settings, or produce a docs-aligned project scaffold. Prefer a docs-first workflow by invoking the openai-docs skill or OpenAI developer docs MCP tools before generating code.",
+      "name": "build-chatgpt-app",
+      "path": ".codex/plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/build-chatgpt-app/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build, scaffold, refactor, and troubleshoot ChatGPT Apps SDK applications that combine an MCP server and widget UI. Use when Codex needs to design tools, register UI resources, wire the MCP Apps bridge or ChatGPT compatibility APIs, apply Apps SDK metadata or CSP or domain settings, or produce a docs-aligned project scaffold. Prefer a docs-first workflow by invoking the openai-docs skill or OpenAI developer docs MCP tools before generating code.",
+      "name": "build-chatgpt-app",
+      "path": ".codex/plugins/cache/openai-curated/openai-developers/fef63ecf/skills/build-chatgpt-app/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build source-backed dashboards for monitoring performance, exploring drivers, or acting on product and business metrics. Use when the task needs a dashboard, scorecard, or monitoring view with clear metrics, filters, source definitions, and QA.",
+      "name": "build-dashboard",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/build-dashboard/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build polished analytical reports for executive, product, business, or technical audiences. Use when the task needs a durable answer-first narrative with evidence-backed findings, visuals or tables, caveats, and source context.",
+      "name": "build-report",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/build-report/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact cBioPortal API requests for studies, molecular profiles, mutations, clinical data, and samples. Use when a user wants concise cBioPortal summaries",
+      "name": "cbioportal-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/cbioportal-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact CELLxGENE Discover API requests for public collection and dataset metadata. Use when a user wants concise single-cell collection summaries",
+      "name": "cellxgene-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/cellxgene-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Inspect a ChatGPT Apps MCP server codebase and generate chatgpt-app-submission.json with app info suggestions, tool hint justifications, test cases, and negative test cases, then report review-check findings and outputSchema warnings for submission review.",
+      "name": "chatgpt-app-submission",
+      "path": ".codex/plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/chatgpt-app-submission/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Inspect a ChatGPT Apps MCP server codebase and generate chatgpt-app-submission.json with app info suggestions, tool hint justifications, test cases, and negative test cases, then report review-check findings and outputSchema warnings for submission review.",
+      "name": "chatgpt-app-submission",
+      "path": ".codex/plugins/cache/openai-curated/openai-developers/fef63ecf/skills/chatgpt-app-submission/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build, scaffold, refactor, and troubleshoot ChatGPT Apps SDK applications that combine an MCP server and widget UI. Use when Codex needs to design tools, register UI resources, wire the MCP Apps bridge or ChatGPT compatibility APIs, apply Apps SDK metadata or CSP or domain settings, or produce a docs-aligned project scaffold. Prefer a docs-first workflow by invoking the openai-docs skill or OpenAI developer docs MCP tools before generating code.",
+      "name": "chatgpt-apps",
+      "path": ".codex/skills/chatgpt-apps/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit compact ChEBI 2.0 API requests for chemical search, compound lookup, ontology traversal, and structure metadata. Use when a user wants concise ChEBI summaries",
+      "name": "chebi-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/chebi-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact ChEMBL API requests for activity, molecule, target, mechanism, and text-search endpoints. Use when a user wants concise ChEMBL summaries",
+      "name": "chembl-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/chembl-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact CIViC GraphQL requests for cancer variant interpretation schema inspection and targeted evidence retrieval. Use when a user wants concise CIViC summaries",
+      "name": "civic-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/civic-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Trash-first repository cleanup for dirty local workspaces. Use when the user asks to clean old files, drafts, logs, caches, generated artifacts, stale git lock files, or workspace clutter while preserving tracked source code, runtime assets, model files, datasets, outputs, and local LLM/chat-help context unless explicitly told otherwise.",
+      "name": "cleanspace",
+      "path": ".codex/skills/cleanspace/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Build a composable CLI for Codex from API docs, an OpenAPI spec, existing curl examples, an SDK, a web app, an admin tool, or a local script. Use when the user wants Codex to create a command-line tool that can run from any repo, expose composable read/write commands, return stable JSON, manage auth, and pair with a companion skill.",
+      "name": "cli-creator",
+      "path": ".codex/skills/cli-creator/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit compact ClinicalTrials.gov API v2 requests for study search, metadata, enums, search areas, and field statistics. Use when a user wants concise ClinicalTrials.gov summaries",
+      "name": "clinicaltrials-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/clinicaltrials-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact ClinVar Clinical Tables and NCBI Variation requests for search, VCV, RCV, SCV, and RefSNP lookups. Use when a user wants variant-level summaries or identifier mapping",
+      "name": "clinvar-variation-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/clinvar-variation-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Iterative goal-driven execution loop skill for Codex and CodeX. Use when the user wants the agent to keep going until a task is done, work in cycles, repeatedly plan act check fix, continue until complete, self-review each round, or avoid stopping after a single pass. Good for coding tasks, debugging, test-fix loops, backlog burn-down, research with checkpoints, and multi-step delivery. Triggers on phrases like 'loop until done', 'keep iterating', 'continue working', 'work through this step by step', 'repeat until passing', 'run a plan and check each round', 'don't stop at analysis'.",
+      "name": "codex-ralph-loop-skill",
+      "path": ".codex/skills/codex-ralph-loop-skill/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Codex tooling routing skill for work explicitly about Codex skills, skill packs, plugins, MCP tools, GitHub connector workflows, VoltAgent skills, local agent/debug swarms, OpenAI API key setup, documentation generation, or repository publishing/review tasks. Use when the prompt names Codex skills/plugins/MCP/GitHub/VoltAgent/tool schemas or asks to install, remove, validate, route, or author skills. Do not use for ordinary coding unless tooling or GitHub workflow behavior is the actual task.",
+      "name": "codex-tooling",
+      "path": ".codex/skills/codex-tooling/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Control Windows apps from Codex",
+      "name": "computer-use",
+      "path": ".codex/plugins/cache/openai-bundled/computer-use/26.623.42026/skills/computer-use/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Control the user's Chrome browser for tasks that depend on existing Chrome state: tabs, logged-in sessions, or extensions. Prefer purpose-built connectors, APIs, or CLIs when available.",
+      "name": "control-chrome",
+      "path": ".codex/plugins/cache/openai-bundled/chrome/26.623.42026/skills/control-chrome/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Control the user's Chrome browser for tasks that depend on existing Chrome state: tabs, logged-in sessions, or extensions. Prefer purpose-built connectors, APIs, or CLIs when available.",
+      "name": "control-chrome",
+      "path": ".codex/plugins/cache/openai-bundled/chrome/latest/skills/control-chrome/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Control the in-app Browser. Use to open, navigate, inspect, test, click, type, screenshot, or verify local targets such as localhost, 127.0.0.1, ::1, file://, the current in-app browser tab, and websites shown side by side inside Codex.",
+      "name": "control-in-app-browser",
+      "path": ".codex/plugins/cache/openai-bundled/browser/26.623.42026/skills/control-in-app-browser/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Create, update, inspect, or repair Data Analytics semantic layers. Use when the user asks to save data context or create a semantic layer that future Data Analytics work can inspect and cite.",
+      "name": "create-data-context",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/create-data-context/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Skill for creating AI agent projects using the VoltAgent framework. Guide for CLI setup and manual bootstrapping.",
+      "name": "create-voltagent",
+      "path": ".codex/skills/create-voltagent/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Base rules for end users calling NVIDIA cuOpt (routing/LP/MILP/QP/install/server). Not for cuOpt internals \u2014 use cuopt-developer for those.",
+      "name": "cuopt-user-rules",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/cuopt-user-rules/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Parallel debugging and codebase-crawling workflow for spawning many focused Codex subagents across a project. Use when the user explicitly asks to spawn agents, use subagents, swarm a repo, crawl a project, run many debugging agents, perform broad bug triage, parallelize code investigation, audit an unfamiliar codebase for failures, or split debugging/fix work across independent modules.",
+      "name": "debug-agent-swarm",
+      "path": ".codex/skills/debug-agent-swarm/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Design KPI frameworks, metric definitions, targets, guardrails, and measurement plans for product or business decisions. Use when success metrics, drivers, guardrails, targets, or the measurement approach need to be defined or improved.",
+      "name": "design-kpis",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/design-kpis/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Internal prototype QA helper. Use only after a Product Design prototype, URL-to-code build, or image-to-code build has a source visual target and a rendered implementation to compare before handoff. Do not use for broad UX critique, design critique, product audits, or flow reviews; route those user-facing requests to audit.",
+      "name": "design-qa",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/design-qa/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Create, edit, redline, and comment on `.docx`, Word, and Google Docs-targeted document artifacts inside the container, with a strict render-and-verify workflow. Use `render_docx.py` to generate page PNGs (and optional PDF) for visual QA, then iterate until layout is flawless before delivering the final document.",
+      "name": "documents",
+      "path": ".codex/plugins/cache/openai-primary-runtime/documents/26.623.12021/skills/documents/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Validate that a Dynamo deployment's NIXL/UCX/NCCL interconnect is ready for disaggregated serving over RDMA/NVLink. Use after recipe-runner brings a deployment up (especially disagg/multi-node) to confirm the KV transport is correct; use troubleshoot for diagnosing already-failed pods.",
+      "name": "dynamo-interconnect-check",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/dynamo-interconnect-check/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Start or patch Dynamo router modes and run router endpoint smoke checks. Use for round-robin, KV-aware, least-loaded, or device-aware routing setup; use recipe-runner for recipe deployment and troubleshoot for failure diagnosis.",
+      "name": "dynamo-router-starter",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/dynamo-router-starter/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact EFO OLS4 requests for search, term lookup, children, and descendants. Use when a user wants concise EFO resolution or ontology-expansion summaries",
+      "name": "efo-ontology-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/efo-ontology-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact ENCODE REST API requests for object lookups, portal-style search, and metadata retrieval. Use when a user wants concise ENCODE summaries",
+      "name": "encode-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/encode-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Ensembl REST API requests for lookup, overlap, cross-reference, and variation endpoints. Use when a user wants concise Ensembl summaries",
+      "name": "ensembl-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ensembl-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact EpiGraphDB API requests for ontology, literature, MR, gene-drug, and support-path evidence. Use when a user wants concise EpiGraphDB summaries",
+      "name": "epigraphdb-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/epigraphdb-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact eQTL Catalogue API requests for association retrieval and documented metadata endpoints. Use when a user wants concise public eQTL Catalogue summaries",
+      "name": "eqtl-catalogue-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/eqtl-catalogue-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact EVA REST requests for species metadata and archived variant lookups. Use when a user wants concise European Variation Archive summaries",
+      "name": "eva-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/eva-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Fetch compact FinnGen PheWAS summaries for single variants by accepting rsID, GRCh37, or GRCh38 input and resolving to the required GRCh38 query. Use when a user wants concise FinnGen association results for one variant",
+      "name": "finngen-phewas-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/finngen-phewas-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use for new frontend applications, dashboards, games, creative websites, hero sections, and visually driven UI from scratch, or when the user explicitly asks for a redesign/restyle/modernization. Builds from clean, airy, high-taste, readable image-generated concept design with section-specific references, faithful implementation, and browser testing.",
+      "name": "frontend-app-builder",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/frontend-app-builder/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when testing, debugging, or making targeted improvements to rendered frontend apps through the Build Web Apps or web dev plugin: local dev servers, UI regressions, interaction bugs, console errors, responsive layout, and visual QA. Check whether the Browser plugin is available and use it first when it is; otherwise use regular Playwright with the recorded reason.",
+      "name": "frontend-testing-debugging",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/frontend-testing-debugging/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Gather business context from connected or provided sources so downstream analysis starts with the right framing. Use when an analytical question depends on missing context, such as what a metric means, what changed recently, or which sources should be checked. If the same prompt asks for diagnosis, recommendation, or a deliverable, gather context first and continue to the focused skill.",
+      "name": "gather-business-context",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/gather-business-context/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Genebass gene burden requests for one Ensembl gene ID and one burden set. Use when a user wants concise Genebass PheWAS summaries",
+      "name": "genebass-gene-burden-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/genebass-gene-burden-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Mandatory design-brief gate for Product Design build and design workflows. Use before ideation, prototyping, image-to-code builds, redesigns, or product UI work to clarify missing product, visual, and interactivity context or play back the supplied brief before proceeding.",
+      "name": "get-context",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/get-context/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Address actionable GitHub pull request review feedback. Use when the user wants to inspect unresolved review threads, requested changes, or inline review comments on a PR, then implement selected fixes. Use the GitHub app for PR metadata and flat comment reads, and use the bundled GraphQL script via `gh` whenever thread-level state, resolution status, or inline review context matters.",
+      "name": "gh-address-comments",
+      "path": ".codex/plugins/cache/openai-curated-remote/github/0.1.5/skills/gh-address-comments/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Address actionable GitHub pull request review feedback. Use when the user wants to inspect unresolved review threads, requested changes, or inline review comments on a PR, then implement selected fixes. Use the GitHub app for PR metadata and flat comment reads, and use the bundled GraphQL script via `gh` whenever thread-level state, resolution status, or inline review context matters.",
+      "name": "gh-address-comments",
+      "path": ".codex/plugins/cache/openai-curated/github/fef63ecf/skills/gh-address-comments/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when a user asks to debug or fix failing GitHub PR checks that run in GitHub Actions. Use the GitHub app from this plugin for PR metadata and patch context, and use `gh` for Actions check and log inspection before implementing any approved fix.",
+      "name": "gh-fix-ci",
+      "path": ".codex/plugins/cache/openai-curated-remote/github/0.1.5/skills/gh-fix-ci/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when a user asks to debug or fix failing GitHub PR checks that run in GitHub Actions. Use the GitHub app from this plugin for PR metadata and patch context, and use `gh` for Actions check and log inspection before implementing any approved fix.",
+      "name": "gh-fix-ci",
+      "path": ".codex/plugins/cache/openai-curated/github/fef63ecf/skills/gh-fix-ci/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Triage and orient GitHub repository, pull request, and issue work through the connected GitHub app. Use when the user asks for general GitHub help, wants PR or issue summaries, or needs repository context before choosing a more specific GitHub workflow.",
+      "name": "github",
+      "path": ".codex/plugins/cache/openai-curated-remote/github/0.1.5/skills/github/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Triage and orient GitHub repository, pull request, and issue work through the connected GitHub app. Use when the user asks for general GitHub help, wants PR or issue summaries, or needs repository context before choosing a more specific GitHub workflow.",
+      "name": "github",
+      "path": ".codex/plugins/cache/openai-curated/github/fef63ecf/skills/github/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Manage Gmail inbox triage, mailbox search, thread summaries, action extraction, reply drafting, and email forwarding through connected Gmail data. Use when the user wants to inspect a mailbox or thread, search email with Gmail query syntax, summarize messages, extract decisions and follow-ups, prepare replies or forwarded messages, or organize messages with explicit confirmation before send, archive, delete, or label actions.",
+      "name": "gmail",
+      "path": ".codex/plugins/cache/openai-curated-remote/gmail/0.1.3/skills/gmail/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Manage Gmail inbox triage, mailbox search, thread summaries, action extraction, reply drafting, and email forwarding through connected Gmail data. Use when the user wants to inspect a mailbox or thread, search email with Gmail query syntax, summarize messages, extract decisions and follow-ups, prepare replies or forwarded messages, or organize messages with explicit confirmation before send, archive, delete, or label actions.",
+      "name": "gmail",
+      "path": ".codex/plugins/cache/openai-curated/gmail/fef63ecf/skills/gmail/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Triage a Gmail inbox into actionable buckets such as urgent, needs reply soon, waiting, and FYI using connected Gmail data. Use when the user asks to triage the inbox, rank what needs attention, find what still needs a reply, or separate important mail from noise.",
+      "name": "gmail-inbox-triage",
+      "path": ".codex/plugins/cache/openai-curated-remote/gmail/0.1.3/skills/gmail-inbox-triage/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Triage a Gmail inbox into actionable buckets such as urgent, needs reply soon, waiting, and FYI using connected Gmail data. Use when the user asks to triage the inbox, rank what needs attention, find what still needs a reply, or separate important mail from noise.",
+      "name": "gmail-inbox-triage",
+      "path": ".codex/plugins/cache/openai-curated/gmail/fef63ecf/skills/gmail-inbox-triage/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact gnomAD GraphQL requests for frequency, gene constraint, and variant context queries. Use when a user wants concise gnomAD summaries",
+      "name": "gnomad-graphql-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/gnomad-graphql-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Manage scheduling and conflicts in connected Google Calendar data. Use when the user wants to inspect calendars, compare availability, review conflicts, find a meeting room, review event notes or attachments, add or adjust reminders, place temporary holds, or draft exact create, update, reschedule, or cancel changes with timezone-aware details.",
+      "name": "google-calendar",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-calendar/1.2.3/skills/google-calendar/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Manage scheduling and conflicts in connected Google Calendar data. Use when the user wants to inspect calendars, compare availability, review conflicts, find a meeting room, review event notes or attachments, add or adjust reminders, place temporary holds, or draft exact create, update, reschedule, or cancel changes with timezone-aware details.",
+      "name": "google-calendar",
+      "path": ".codex/plugins/cache/openai-curated/google-calendar/fef63ecf/skills/google-calendar/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Manage scheduling and conflicts in connected Google Calendar data. Use when the user wants to inspect calendars, compare availability, review conflicts, find a meeting room, review event notes or attachments, add or adjust reminders, place temporary holds, or draft exact create, update, reschedule, or cancel changes with timezone-aware details.",
+      "name": "google-calendar",
+      "path": ".codex/plugins/cache/openai-curated/plugin-install-YXNcez/google-calendar/719ed655/skills/google-calendar/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build polished one-day Google Calendar briefs. Use when the user asks for today, tomorrow, or a specific date summary with an agenda, conflict flags, free windows, remaining-meeting readouts, or a calendar brief, and the Google Calendar connector is available.",
+      "name": "google-calendar-daily-brief",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-calendar/1.2.3/skills/google-calendar-daily-brief/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build polished one-day Google Calendar briefs. Use when the user asks for today, tomorrow, or a specific date summary with an agenda, conflict flags, free windows, remaining-meeting readouts, or a calendar brief, and the Google Calendar connector is available.",
+      "name": "google-calendar-daily-brief",
+      "path": ".codex/plugins/cache/openai-curated/google-calendar/fef63ecf/skills/google-calendar-daily-brief/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build polished one-day Google Calendar briefs. Use when the user asks for today, tomorrow, or a specific date summary with an agenda, conflict flags, free windows, remaining-meeting readouts, or a calendar brief, and the Google Calendar connector is available.",
+      "name": "google-calendar-daily-brief",
+      "path": ".codex/plugins/cache/openai-curated/plugin-install-YXNcez/google-calendar/719ed655/skills/google-calendar-daily-brief/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Find ways to open up meaningful free time in a connected Google Calendar. Use when the user wants to clear up their day, make room for focus time, create a longer uninterrupted block, or see the smallest set of calendar changes that would give time back.",
+      "name": "google-calendar-free-up-time",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-calendar/1.2.3/skills/google-calendar-free-up-time/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Find ways to open up meaningful free time in a connected Google Calendar. Use when the user wants to clear up their day, make room for focus time, create a longer uninterrupted block, or see the smallest set of calendar changes that would give time back.",
+      "name": "google-calendar-free-up-time",
+      "path": ".codex/plugins/cache/openai-curated/google-calendar/fef63ecf/skills/google-calendar-free-up-time/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Find and rank good meeting times for multiple people using connected Google Calendar data. Use when the user wants to schedule a group meeting, compare candidate slots across several attendees, find the best compromise time, or add a room check after narrowing the attendee-compatible options.",
+      "name": "google-calendar-group-scheduler",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-calendar/1.2.3/skills/google-calendar-group-scheduler/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Find and rank good meeting times for multiple people using connected Google Calendar data. Use when the user wants to schedule a group meeting, compare candidate slots across several attendees, find the best compromise time, or add a room check after narrowing the attendee-compatible options.",
+      "name": "google-calendar-group-scheduler",
+      "path": ".codex/plugins/cache/openai-curated/google-calendar/fef63ecf/skills/google-calendar-group-scheduler/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build a practical meeting prep brief from a connected Google Calendar event and its nearby context. Use when the user wants to prepare for an upcoming meeting, understand what to read beforehand, pull in linked notes or docs, or get a concise brief on what the meeting appears to require.",
+      "name": "google-calendar-meeting-prep",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-calendar/1.2.3/skills/google-calendar-meeting-prep/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build a practical meeting prep brief from a connected Google Calendar event and its nearby context. Use when the user wants to prepare for an upcoming meeting, understand what to read beforehand, pull in linked notes or docs, or get a concise brief on what the meeting appears to require.",
+      "name": "google-calendar-meeting-prep",
+      "path": ".codex/plugins/cache/openai-curated/google-calendar/fef63ecf/skills/google-calendar-meeting-prep/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Connector-first Google Docs creation and editing in local Codex plugin sessions, with direct native create and batchUpdate workflows for simple docs, DOCX-first import for polished deliverables, target-document checks, smart chip and building-block reconstruction, connector-readback verification, and reference routing for formatting, citations, tables, and write-safety.",
+      "name": "google-docs",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-drive/0.1.7/skills/google-docs/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Connector-first Google Docs creation and editing in local Codex plugin sessions, with direct native create and batchUpdate workflows for simple docs, DOCX-first import for polished deliverables, target-document checks, smart chip and building-block reconstruction, connector-readback verification, and reference routing for formatting, citations, tables, and write-safety.",
+      "name": "google-docs",
+      "path": ".codex/plugins/cache/openai-curated/google-drive/fef63ecf/skills/google-docs/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use connected Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work. Use when the user wants to find, fetch, organize, share, export, copy, or delete Drive files, or summarize and edit Google Docs, Google Sheets, and Google Slides through one unified Google Drive plugin.",
+      "name": "google-drive",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-drive/0.1.7/skills/google-drive/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use connected Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work. Use when the user wants to find, fetch, organize, share, export, copy, or delete Drive files, or summarize and edit Google Docs, Google Sheets, and Google Slides through one unified Google Drive plugin.",
+      "name": "google-drive",
+      "path": ".codex/plugins/cache/openai-curated/google-drive/fef63ecf/skills/google-drive/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Write, reply to, and resolve Google Drive comments on Docs, Sheets, Slides, and Drive files with evidence-backed location context. Use when the user asks to leave comments, review a file with comments, respond to comment threads, or resolve Drive comments.",
+      "name": "google-drive-comments",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-drive/0.1.7/skills/google-drive-comments/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Write, reply to, and resolve Google Drive comments on Docs, Sheets, Slides, and Drive files with evidence-backed location context. Use when the user asks to leave comments, review a file with comments, respond to comment threads, or resolve Drive comments.",
+      "name": "google-drive-comments",
+      "path": ".codex/plugins/cache/openai-curated/google-drive/fef63ecf/skills/google-drive-comments/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Analyze and edit connected Google Sheets with range precision. Use when the user wants to create Google Sheets, find a spreadsheet, inspect tabs or ranges, search rows, plan formulas, create or repair charts, clean or restructure tables, write concise summaries, or make explicit cell-range updates.",
+      "name": "google-sheets",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-drive/0.1.7/skills/google-sheets/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Analyze and edit connected Google Sheets with range precision. Use when the user wants to create Google Sheets, find a spreadsheet, inspect tabs or ranges, search rows, plan formulas, create or repair charts, clean or restructure tables, write concise summaries, or make explicit cell-range updates.",
+      "name": "google-sheets",
+      "path": ".codex/plugins/cache/openai-curated/google-drive/fef63ecf/skills/google-sheets/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Google Slides work for finding, reading, summarizing, creating, importing, template following, visual cleanup, source-deck adaptation, structural repair, and content edits in native Slides decks.",
+      "name": "google-slides",
+      "path": ".codex/plugins/cache/openai-curated-remote/google-drive/0.1.7/skills/google-slides/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Google Slides work for finding, reading, summarizing, creating, importing, visual cleanup, template migration, structural repair, and content edits in native Slides decks.",
+      "name": "google-slides",
+      "path": ".codex/plugins/cache/openai-curated/google-drive/fef63ecf/skills/google-slides/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Fetch GTEx single-tissue eQTL associations from one variant input by accepting rsID, GRCh37, or GRCh38 input and resolving to the required GRCh38 query for the GTEx v2 API. Use when a user wants eQTL associations returned as JSON.",
+      "name": "gtex-eqtl-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/gtex-eqtl-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact GWAS Catalog REST API v2 requests for studies, associations, SNPs, EFO traits, genes, publications, loci, and metadata. Use when a user wants concise GWAS Catalog summaries",
+      "name": "gwas-catalog-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/gwas-catalog-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Hugging Face Hub CLI (`hf`) for downloading, uploading, and managing repositories, models, datasets, and Spaces on the Hugging Face Hub. Replaces now deprecated `huggingface-cli` command.",
+      "name": "hf-cli",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/cli/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Hugging Face Hub CLI (`hf`) for downloading, uploading, and managing repositories, models, datasets, and Spaces on the Hugging Face Hub. Replaces now deprecated `huggingface-cli` command.",
+      "name": "hf-cli",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/cli/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact HMDB search requests for metabolites, proteins, diseases, and pathways. Use when a user wants concise HMDB summaries",
+      "name": "hmdb-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/hmdb-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Run evaluations for Hugging Face Hub models using inspect-ai and lighteval on local hardware. Use for backend selection, local GPU evals, and choosing between vLLM / Transformers / accelerate. Not for HF Jobs orchestration, model-card PRs, .eval_results publication, or community-evals automation.",
+      "name": "huggingface-community-evals",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/community-evals/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Run evaluations for Hugging Face Hub models using inspect-ai and lighteval on local hardware. Use for backend selection, local GPU evals, and choosing between vLLM / Transformers / accelerate. Not for HF Jobs orchestration, model-card PRs, .eval_results publication, or community-evals automation.",
+      "name": "huggingface-community-evals",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/community-evals/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use this skill for Hugging Face Dataset Viewer API workflows that fetch subset/split metadata, paginate rows, search text, apply filters, download parquet URLs, and read size or statistics.",
+      "name": "huggingface-datasets",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/datasets/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use this skill for Hugging Face Dataset Viewer API workflows that fetch subset/split metadata, paginate rows, search text, apply filters, download parquet URLs, and read size or statistics.",
+      "name": "huggingface-datasets",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/datasets/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build Gradio web UIs and demos in Python. Use when creating or editing Gradio apps, components, event listeners, layouts, or chatbots.",
+      "name": "huggingface-gradio",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/gradio/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Build Gradio web UIs and demos in Python. Use when creating or editing Gradio apps, components, event listeners, layouts, or chatbots.",
+      "name": "huggingface-gradio",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/gradio/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "This skill should be used when users want to run any workload on Hugging Face Jobs infrastructure. Covers UV scripts, Docker-based jobs, hardware selection, cost estimation, authentication with tokens, secrets management, timeout configuration, and result persistence. Designed for general-purpose compute workloads including data processing, inference, experiments, batch jobs, and any Python-based tasks. Should be invoked for tasks involving cloud compute, GPU workloads, or when users mention running jobs on Hugging Face infrastructure without local setup.",
+      "name": "huggingface-jobs",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/jobs/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "This skill should be used when users want to run any workload on Hugging Face Jobs infrastructure. Covers UV scripts, Docker-based jobs, hardware selection, cost estimation, authentication with tokens, secrets management, timeout configuration, and result persistence. Designed for general-purpose compute workloads including data processing, inference, experiments, batch jobs, and any Python-based tasks. Should be invoked for tasks involving cloud compute, GPU workloads, or when users mention running jobs on Hugging Face infrastructure without local setup.",
+      "name": "huggingface-jobs",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/jobs/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "This skill should be used when users want to train or fine-tune language models using TRL (Transformer Reinforcement Learning) on Hugging Face Jobs infrastructure. Covers SFT, DPO, GRPO and reward modeling training methods, plus GGUF conversion for local deployment. Includes guidance on the TRL Jobs package, UV scripts with PEP 723 format, dataset preparation and validation, hardware selection, cost estimation, Trackio monitoring, Hub authentication, and model persistence. Should be invoked for tasks involving cloud GPU training, GGUF conversion, or when users mention training on Hugging Face Jobs without local GPU setup.",
+      "name": "huggingface-llm-trainer",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/llm-trainer/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "This skill should be used when users want to train or fine-tune language models using TRL (Transformer Reinforcement Learning) on Hugging Face Jobs infrastructure. Covers SFT, DPO, GRPO and reward modeling training methods, plus GGUF conversion for local deployment. Includes guidance on the TRL Jobs package, UV scripts with PEP 723 format, dataset preparation and validation, hardware selection, cost estimation, Trackio monitoring, Hub authentication, and model persistence. Should be invoked for tasks involving cloud GPU training, GGUF conversion, or when users mention training on Hugging Face Jobs without local GPU setup.",
+      "name": "huggingface-llm-trainer",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/llm-trainer/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Publish and manage research papers on Hugging Face Hub. Supports creating paper pages, linking papers to models/datasets, claiming authorship, and generating professional markdown-based research articles.",
+      "name": "huggingface-paper-publisher",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/paper-publisher/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Publish and manage research papers on Hugging Face Hub. Supports creating paper pages, linking papers to models/datasets, claiming authorship, and generating professional markdown-based research articles.",
+      "name": "huggingface-paper-publisher",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/paper-publisher/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Look up and read Hugging Face paper pages in markdown, and use the papers API for structured metadata such as authors, linked models/datasets/spaces, Github repo and project page. Use when the user shares a Hugging Face paper page URL, an arXiv URL or ID, or asks to summarize, explain, or analyze an AI research paper.",
+      "name": "huggingface-papers",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/papers/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Look up and read Hugging Face paper pages in markdown, and use the papers API for structured metadata such as authors, linked models/datasets/spaces, Github repo and project page. Use when the user shares a Hugging Face paper page URL, an arXiv URL or ID, or asks to summarize, explain, or analyze an AI research paper.",
+      "name": "huggingface-papers",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/papers/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Track and visualize ML training experiments with Trackio. Use when logging metrics during training (Python API), firing alerts for training diagnostics, or retrieving/analyzing logged metrics (CLI). Supports real-time dashboard visualization, alerts with webhooks, HF Space syncing, and JSON output for automation.",
+      "name": "huggingface-trackio",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/trackio/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Track and visualize ML training experiments with Trackio. Use when logging metrics during training (Python API), firing alerts for training diagnostics, or retrieving/analyzing logged metrics (CLI). Supports real-time dashboard visualization, alerts with webhooks, HF Space syncing, and JSON output for automation.",
+      "name": "huggingface-trackio",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/trackio/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Trains and fine-tunes vision models for object detection (D-FINE, RT-DETR v2, DETR, YOLOS), image classification (timm models \u2014 MobileNetV3, MobileViT, ResNet, ViT/DINOv3 \u2014 plus any Transformers classifier), and SAM/SAM2 segmentation using Hugging Face Transformers on Hugging Face Jobs cloud GPUs. Covers COCO-format dataset preparation, Albumentations augmentation, mAP/mAR evaluation, accuracy metrics, SAM segmentation with bbox/point prompts, DiceCE loss, hardware selection, cost estimation, Trackio monitoring, and Hub persistence. Use when users mention training object detection, image classification, SAM, SAM2, segmentation, image matting, DETR, D-FINE, RT-DETR, ViT, timm, MobileNet, ResNet, bounding box models, or fine-tuning vision models on Hugging Face Jobs.",
+      "name": "huggingface-vision-trainer",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/vision-trainer/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Trains and fine-tunes vision models for object detection (D-FINE, RT-DETR v2, DETR, YOLOS), image classification (timm models \u2014 MobileNetV3, MobileViT, ResNet, ViT/DINOv3 \u2014 plus any Transformers classifier), and SAM/SAM2 segmentation using Hugging Face Transformers on Hugging Face Jobs cloud GPUs. Covers COCO-format dataset preparation, Albumentations augmentation, mAP/mAR evaluation, accuracy metrics, SAM segmentation with bbox/point prompts, DiceCE loss, hardware selection, cost estimation, Trackio monitoring, and Hub persistence. Use when users mention training object detection, image classification, SAM, SAM2, segmentation, image matting, DETR, D-FINE, RT-DETR, ViT, timm, MobileNet, ResNet, bounding box models, or fine-tuning vision models on Hugging Face Jobs.",
+      "name": "huggingface-vision-trainer",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/vision-trainer/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Human Protein Atlas requests for gene JSON, search downloads, and page-level tissue or cell-line lookups. Use when a user wants concise Human Protein Atlas summaries; save raw JSON or HTML only on request.",
+      "name": "human-protein-atlas-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/human-protein-atlas-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Generate image-based visual alternatives, remixes, or concept directions after Product Design get-context has confirmed the design brief. Use when the user asks for design variants, visual exploration, remixes, or image-generated approaches from provided context.",
+      "name": "ideate",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/ideate/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Implement a selected image, screenshot, mockup, or Image Gen reference as a faithful responsive frontend after Product Design get-context has confirmed the design brief.",
+      "name": "image-to-code",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/image-to-code/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas.",
+      "name": "imagegen",
+      "path": ".codex/skills/.system/imagegen/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Route Data Analytics plugin-level requests and broad analytics work to the right focused workflow. Use when Data Analytics is at-mentioned, or for analytics requests involving data, metrics, dashboards, reports, charts, notebooks, spreadsheets, KPIs, market sizing, or semantic layers.",
+      "name": "index",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/index/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use to discover specific skills for the Product Design plugin, when it is at-mentioned directly, or for any mentions of potentially relevant work, including: UX research; product, screen, or flow audits; visual ideation; app or interface design, redesign, cloning, prototyping, or implementation from ideas, URLs, images, Figma, or code; design QA; and prototype sharing or deployment.",
+      "name": "index",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/index/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact IPD REST requests for HLA allele and cell-level metadata using the public IPD query API. Use when a user wants concise IPD summaries; save raw JSON or text only on request.",
+      "name": "ipd-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ipd-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Create, edit, or validate reproducible SQL or Python notebooks. Use for notebooks, SQL/Python scratchpads, reproducible exploration, audit trails, or runnable companions where the analysis should be reviewable or rerunnable.",
+      "name": "jupyter-notebooks",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/jupyter-notebooks/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Prepare KPI readouts, scorecards, WBR/MBR/QBR updates, and executive summaries from quantitative business or product metrics; use when the task is to report status, compare against targets, explain validated drivers, and state operating implications.",
+      "name": "kpi-reporting",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/kpi-reporting/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Local-first AI development for image, video, training, and inference workflows built on diffusers, transformers, accelerate, and native PyTorch. Use when working on local model pipelines, hardware-aware optimization, benchmark or training loops, environment setup, backend selection, or debugging on NVIDIA, AMD, or Apple Silicon machines where the local device is the target runtime.",
+      "name": "local-ai-dev",
+      "path": ".codex/skills/local-ai-dev/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Map GWAS loci to ranked candidate genes using a deterministic multi-skill chain (EFO -> GWAS -> coordinates -> Open Targets L2G/coloc -> eQTL -> burden/coding context), with reproducible tables and optional figures. Use when a user provides a trait/EFO term and/or lead variants and needs locus-to-gene prioritization for downstream biology decisions.",
+      "name": "locus-to-gene-mapper-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/locus-to-gene-mapper-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Estimate market, segment, or opportunity size with transparent assumptions and uncertainty. Use for TAM/SAM/SOM, sizing scenarios, or comparing the scale of possible opportunities.",
+      "name": "market-sizing",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/market-sizing/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact MetaboLights requests for study discovery and study-level metabolomics metadata. Use when a user wants concise MetaboLights summaries",
+      "name": "metabolights-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/metabolights-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Diagnose why a metric changed or differs from expectation. Use when the task is to identify likely drivers of a metric movement, anomaly, gap, or discrepancy.",
+      "name": "metric-diagnostics",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/metric-diagnostics/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact MGnify API requests for microbiome studies, samples, and biome metadata. Use when a user wants concise MGnify summaries",
+      "name": "mgnify-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/mgnify-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "MoK Project routing skill for work explicitly in or about C:\\Users\\Shawn\\Desktop\\MoK-Project or the MoK local AI assistant stack. Use for MoK dataset library/catalog masters, imported training data, source-backed dataset generation, model research or download-only staging, local Ollama/vLLM serving, Discord relay/control board work, SFT/preference/eval readiness, retrieval indexes, and training/evaluation planning. Do not use for generic ML, generic Python, or ordinary code edits unless the prompt names MoK, a MoK path/artifact, or a complex MoK data/model/serving workflow.",
+      "name": "mok",
+      "path": ".codex/skills/mok/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit, poll, and summarize NCBI BLAST Common URL API jobs (Blast.cgi) for nucleotide or protein sequences. Use when a user wants RID status, BLAST results, or compact top-hit summaries; fetch raw Text/JSON2 only on request.",
+      "name": "ncbi-blast-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ncbi-blast-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Clinical Tables NCBI Gene requests for human gene lookup, pagination, and field selection. Use when a user wants concise autocomplete-style human gene search results",
+      "name": "ncbi-clinicaltables-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ncbi-clinicaltables-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact NCBI Datasets v2 requests for assembly, genome, taxonomy, and related metadata endpoints. Use when a user wants concise NCBI Datasets summaries; save raw JSON or text only on request.",
+      "name": "ncbi-datasets-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ncbi-datasets-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact NCBI Entrez E-Utilities requests for PubMed, Gene, Protein, Nucleotide, PMC metadata, and GEO metadata workflows. Use when a user wants concise Entrez search, fetch, summary, or link results; save raw JSON or XML only on request.",
+      "name": "ncbi-entrez-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ncbi-entrez-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact NCBI PMC Open Access requests for article/file availability metadata. Use when a user wants concise PMC Open Access summaries; save raw XML only on request.",
+      "name": "ncbi-pmc-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ncbi-pmc-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Installs NemoClaw, launches a sandbox, and runs the first agent prompt. Use when onboarding, installing, or launching a NemoClaw sandbox for the first time. Trigger keywords - nemoclaw quickstart, install nemoclaw openclaw sandbox, nemohermes quickstart, hermes agent nemoclaw, run hermes openshell sandbox, nemoclaw prerequisites, nemoclaw supported platforms, nemoclaw hardware software, nemoclaw windows wsl2 setup, nemoclaw install windows docker desktop.",
+      "name": "nemoclaw-user-get-started",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/nemoclaw-user-get-started/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Coordinate the end-to-end CAD/source-asset to SimReady workflow. Use for broad requests such as CAD to SimReady, source asset to simulation-ready USD, or prop packaging that require conversion, material/physics assignment, SimReady conformance, validation, and optional package creation; deploy or verify Content Agents services first when property assignment is enabled; route single-stage work through nested references.",
+      "name": "omniverse-cad-to-simready",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/omniverse-cad-to-simready/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use as the top-level router for Omniverse Realtime Viewer USD app requests and focused viewer reference documents.",
+      "name": "omniverse-realtime-viewer",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/omniverse-realtime-viewer/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Top-level workflow skill for USD performance diagnosis and optimization. Use for slow loading, high memory, low FPS, or 'optimize my scene' requests; delegates auth/runtime setup to Phase 0 owners.",
+      "name": "omniverse-usd-performance-tuning",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/omniverse-usd-performance-tuning/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when an OpenAI API request fails and Codex needs to classify the likely cause, explain the next step, and route to the right follow-up. Covers common runtime failures such as blocked outbound network access, invalid credentials, exhausted API quota or credits, rate limits, and model, project, or organization access issues; delegate key provisioning to openai-platform-api-key and current documentation lookups to openai-docs.",
+      "name": "openai-api-troubleshooting",
+      "path": ".codex/plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-api-troubleshooting/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when an OpenAI API request fails and Codex needs to classify the likely cause, explain the next step, and route to the right follow-up. Covers common runtime failures such as blocked outbound network access, invalid credentials, exhausted API quota or credits, rate limits, and model, project, or organization access issues; delegate key provisioning to openai-platform-api-key and current documentation lookups to openai-docs.",
+      "name": "openai-api-troubleshooting",
+      "path": ".codex/plugins/cache/openai-curated/openai-developers/fef63ecf/skills/openai-api-troubleshooting/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when the user asks how to build with OpenAI products or APIs, asks about Codex itself or choosing Codex surfaces, needs up-to-date official documentation with citations, help choosing the latest model for a use case, or model upgrade and prompt-upgrade guidance; use OpenAI docs MCP tools for non-Codex docs questions, use the Codex manual helper first for broad Codex self-knowledge, and restrict fallback browsing to official OpenAI domains.",
+      "name": "openai-docs",
+      "path": ".codex/skills/.system/openai-docs/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Use when Codex is asked to build, run, test, debug, or configure an OpenAI-backed or provider-unspecified AI app, UI, script, CLI, generator, or tool, especially requests phrased only as \"using AI\" or generators driven by forms/user input; also use for OPENAI_API_KEY or sk-proj setup. Treat this as the credential gate: inspect safely, ask reuse-vs-new before API work, and never expose plaintext.",
+      "name": "openai-platform-api-key",
+      "path": ".codex/plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-platform-api-key/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use for building, running, testing, debugging, or configuring apps, UIs, scripts, CLIs, generators, and tools that use AI, including AI-powered apps, apps that generate output with AI, and user-input-driven AI features. Treat unspecified AI in build requests as OpenAI API usage unless the user names another provider or says not to use OpenAI. First inspect credentials safely, then ask whether to reuse an existing key or create one before API-dependent implementation. Also use for OPENAI_API_KEY or sk-proj setup requests. Never expose plaintext.",
+      "name": "openai-platform-api-key",
+      "path": ".codex/plugins/cache/openai-curated/openai-developers/fef63ecf/skills/openai-platform-api-key/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Open Targets Platform GraphQL requests for target, disease, drug, variant, study, and search data, including associated-disease datasource heatmap matrices. Use when a user wants concise Open Targets summaries or per-datasource evidence context",
+      "name": "opentargets-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/opentargets-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Read, create, inspect, render, and verify PDF files where visual layout matters. Use Poppler rendering plus Python tools such as reportlab, pdfplumber, and pypdf for generation and extraction.",
+      "name": "pdf",
+      "path": ".codex/plugins/cache/openai-primary-runtime/pdf/26.623.12021/skills/pdf/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact PharmGKB API requests for genes, variants, clinical annotations, dosing guidelines, and search. Use when a user wants concise PharmGKB summaries",
+      "name": "pharmgkb-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/pharmgkb-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": ">-",
+      "name": "physical-ai-infrastructure-setup-and-resilient-scaling",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/physical-ai-infrastructure-setup-and-resilient-scaling/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Router for NVIDIA NuRec/NRE: USDZ rendering, NCore conversion, 3DGS, gRPC sensor sim, PhysicalAI HF datasets. Do NOT use for SimReady or infra setup.",
+      "name": "physical-ai-neural-reconstruction",
+      "path": ".codex/plugins/cache/openai-curated-remote/nvidia/1.0.2/skills/physical-ai-neural-reconstruction/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Create and scaffold plugin directories for Codex with a required `.codex-plugin/plugin.json`, optional plugin folders/files, valid manifest defaults, and personal-marketplace entries by default. Use when Codex needs to create a new personal plugin, add optional plugin structure, generate or update marketplace entries for plugin ordering and availability metadata, or update an existing local plugin during development with the CLI-driven cachebuster and reinstall flow.",
+      "name": "plugin-creator",
+      "path": ".codex/skills/.system/plugin-creator/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Create or edit PowerPoint or Google Slides decks",
+      "name": "Presentations",
+      "path": ".codex/plugins/cache/openai-primary-runtime/presentations/26.623.12021/skills/presentations/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact PRIDE Archive API requests for proteomics project discovery and project-level metadata. Use when a user wants concise PRIDE summaries",
+      "name": "pride-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/pride-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Analyze product or business data to support a decision or recommendation. Use when a decision depends on metric-backed evidence, such as choosing a direction, prioritizing an opportunity, evaluating a change, segmenting users, sizing tradeoffs, or deciding what to do next.",
+      "name": "product-business-analysis",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/product-business-analysis/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Always run a fast skill-routing check at the start of any Codex chat or task so Codex decides whether another installed skill should be used, even when the user did not name one. Build and refresh project-specific skill routing maps when Codex is working in a project that lacks PROJECT_SKILLS.md or docs/projectskill-list.use-cases.json, when many skills are installed and routing is unclear, when the user asks which skills apply, or when the user says projectskill_list, projectskill-list, skill map, skill routing, scan project skills, Atlas skill setup, or codex build.",
+      "name": "projectskill-list",
+      "path": ".codex/skills/projectskill-list/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Submit compact ProteomeXchange PROXI requests for datasets, libraries, peptidoforms, proteins, PSMs, spectra, and USI examples. Use when a user wants concise PROXI summaries",
+      "name": "proteomexchange-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/proteomexchange-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Route coded prototype requests after Product Design get-context has confirmed the design brief. Use for building prototypes from URLs, images, mockups, Figma, existing code, or ideas that need visual exploration before build.",
+      "name": "prototype",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/prototype/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact PubChem PUG REST requests for compound properties, descriptions, assay summaries, and substance metadata. Use when a user wants concise PubChem summaries",
+      "name": "pubchem-pug-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/pubchem-pug-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact QuickGO requests for GO terms, annotations, and ontology traversal. Use when a user wants concise QuickGO summaries",
+      "name": "quickgo-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/quickgo-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact RCSB PDB requests for core metadata, Search API queries, and FASTA downloads. Use when a user wants concise RCSB summaries; save raw JSON or FASTA only on request.",
+      "name": "rcsb-pdb-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/rcsb-pdb-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.",
+      "name": "react-best-practices",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/react-best-practices/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Reactome ContentService requests for pathway, event, participant, search, and diagram-related data. Use when a user wants concise Reactome summaries",
+      "name": "reactome-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/reactome-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Narrow conversion skill. Invoke only when the user explicitly asks to convert an existing local or blob-hosted HTML analytics report into a Google Doc, DOCX, or shareable document.",
+      "name": "report-to-google-doc",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/build-report/report-to-google-doc/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Narrow conversion skill. Invoke only when the user explicitly asks to convert an existing HTML analytics report into a native Google Slides deck.",
+      "name": "report-to-google-slides",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/build-report/report-to-google-slides/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Narrow conversion skill. Invoke only when the user explicitly asks to convert an existing Data Analytics report, dashboard, or inline chart export into a PDF artifact.",
+      "name": "report-to-pdf",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/build-report/report-to-pdf/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Run fast, source-grounded UX research on the highest-signal problems users are experiencing with a user-specified digital product. Use when the user asks to research user pain, UX friction, onboarding issues, docs/help problems, developer experience friction, support pain, product workflow issues, or current user complaints for a named product.",
+      "name": "research",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/research/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Route broad or ambiguous life-sciences research requests to the right skills, normalize core entities, optionally parallelize independent evidence gathering with subagents when available, and synthesize a concise evidence-backed answer. Use when a user asks a general life-sciences question that could span multiple sources or analysis types.",
+      "name": "research-router-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/research-router-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact Rhea reaction search requests for biochemical reactions and reaction IDs. Use when a user wants concise Rhea summaries",
+      "name": "rhea-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/rhea-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact RNAcentral API requests for RNA entry browsing, single-entry lookup, and cross-reference retrieval. Use when a user wants concise RNAcentral summaries",
+      "name": "rnacentral-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/rnacentral-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use when the user explicitly asks for a desktop or system screenshot (full screen, specific app or window, or a pixel region), or when tool-specific capture capabilities are unavailable and an OS-level capture is needed.",
+      "name": "screenshot",
+      "path": ".codex/skills/screenshot/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Shared SDK/runtime cache routing skill for work explicitly in or about F:\\sdks, NVIDIA SDKs, Python wheelhouses, CUDA/PyTorch wheels, TensorRT-RTX, TensorRT-LLM, ONNX Runtime, OpenVINO, FAISS, llama-recipes, junctions, Windows SDK path cleanup, or cross-project SDK reuse for AIWF Studio, MoK, ATLAS, or RV1. Do not use for generic package advice unless the prompt names the shared cache, NVIDIA/runtime setup, or a concrete local SDK path.",
+      "name": "sdk-cache",
+      "path": ".codex/skills/sdk-cache/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Perform language and framework specific security best-practice reviews and suggest improvements. Trigger only when the user explicitly requests security best practices guidance, a security review/report, or secure-by-default coding help. Trigger only for supported languages (python, javascript/typescript, go). Do not trigger for general code review, debugging, or non-security tasks.",
+      "name": "security-best-practices",
+      "path": ".codex/skills/security-best-practices/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Analyze git repositories to build a security ownership topology (people-to-file), compute bus factor and sensitive-code ownership, and export CSV/JSON for graph databases and visualization. Trigger only when the user explicitly wants a security-oriented ownership or bus-factor analysis grounded in git history (for example: orphaned sensitive code, security maintainers, CODEOWNERS reality checks for risk, sensitive hotspots, or ownership clusters). Do not trigger for general maintainer lists or non-security ownership questions.",
+      "name": "security-ownership-map",
+      "path": ".codex/skills/security-ownership-map/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Manages shadcn components and projects \u2014 adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for \"shadcn init\", \"create an app with --preset\", or \"switch to --preset\".",
+      "name": "shadcn",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/shadcn-best-practices/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Share a runnable prototype using the user's preferred deployment tool.",
+      "name": "share",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/share/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Codex's capabilities with specialized knowledge, workflows, or tool integrations.",
+      "name": "skill-creator",
+      "path": ".codex/skills/.system/skill-creator/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Install Codex skills into $CODEX_HOME/skills from a curated list or a GitHub repo path. Use when a user asks to list installable skills, install a curated skill, or install a skill from another repo (including private repos).",
+      "name": "skill-installer",
+      "path": ".codex/skills/.system/skill-installer/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Use this skill when a user requests to create, modify, analyze, visualize, or work with spreadsheet files (`.xlsx`, `.xls`, `.csv`, `.tsv`) or Google Sheets-targeted spreadsheet artifacts with formulas, formatting, charts, tables, and recalculation.",
+      "name": "Spreadsheets",
+      "path": ".codex/plugins/cache/openai-primary-runtime/spreadsheets/26.623.12021/skills/spreadsheets/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact STRING API requests for network, interaction partner, and enrichment endpoints. Use when a user wants concise STRING summaries",
+      "name": "string-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/string-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Guides Stripe integration decisions \u2014 API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controller properties), billing/subscriptions, Treasury financial accounts, integration surfaces (Checkout, Payment Element), and migrating from deprecated Stripe APIs. Use when building, modifying, or reviewing any Stripe integration \u2014 including accepting payments, building marketplaces, integrating Stripe, processing payments, setting up subscriptions, or creating connected accounts.",
+      "name": "stripe-best-practices",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/stripe-best-practices/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, or database configurations.",
+      "name": "supabase-postgres-best-practices",
+      "path": ".codex/plugins/cache/openai-curated-remote/build-web-apps/0.1.2/skills/supabase-best-practices/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Create or update a reusable personal Codex artifact-template skill. Use when the user invokes $template-creator or asks in natural language to create a template using, from, or based on an attached Word document, PowerPoint presentation, or Excel workbook, or explicitly asks to edit or update a passed artifact-template skill. Do not use for one-off artifact creation from an existing template.",
+      "name": "template-creator",
+      "path": ".codex/plugins/cache/openai-primary-runtime/template-creator/26.623.12021/skills/template-creator/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Fetch compact TPMI PheWAS summaries for single variants by accepting rsID, GRCh37, or GRCh38 input and resolving to the required GRCh38 query. Use when a user wants concise TPMI association results for one variant",
+      "name": "tpmi-phewas-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/tpmi-phewas-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use Transformers.js to run state-of-the-art machine learning models directly in JavaScript/TypeScript. Supports NLP (text classification, translation, summarization), computer vision (image classification, object detection), audio (speech recognition, audio classification), and multimodal tasks. Works in Node.js and browsers (with WebGPU/WASM) using pre-trained models from Hugging Face Hub.",
+      "name": "transformers-js",
+      "path": ".codex/plugins/cache/openai-curated-remote/hugging-face/1.0.0/skills/transformers.js/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Use Transformers.js to run state-of-the-art machine learning models directly in JavaScript/TypeScript. Supports NLP (text classification, translation, summarization), computer vision (image classification, object detection), audio (speech recognition, audio classification), and multimodal tasks. Works in Node.js and browsers (with WebGPU/WASM) using pre-trained models from Hugging Face Hub.",
+      "name": "transformers-js",
+      "path": ".codex/plugins/cache/openai-curated/hugging-face/fef63ecf/skills/transformers.js/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Fetch compact UKB-TOPMed PheWAS summaries for single variants by accepting rsID, GRCh37, or GRCh38 input and resolving to the required GRCh38 query. Use when a user wants concise UKB-TOPMed association results for one variant",
+      "name": "ukb-topmed-phewas-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/ukb-topmed-phewas-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Submit compact UniProt REST API requests for UniProtKB, UniRef, UniParc, and FASTA stream endpoints. Use when a user wants concise UniProt summaries; save raw JSON or FASTA only on request.",
+      "name": "uniprot-skill",
+      "path": ".codex/plugins/cache/openai-curated-remote/life-science-research/1.0.3/skills/uniprot-skill/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Clone a live URL as a runnable frontend-only local app using Browser/Chrome source evidence after Product Design get-context has confirmed the design brief.",
+      "name": "url-to-code",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/url-to-code/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Load or manage Product Design's saved user context. Use when the user asks to set up Product Design, get started, onboard, save product or design sources, see what Product Design remembers, update saved context, or remember Product Design preferences. Examples include product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, and general product/design notes.",
+      "name": "user-context",
+      "path": ".codex/plugins/cache/openai-curated-remote/product-design/0.1.47/skills/user-context/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Validate whether an analysis is accurate, well-supported, and ready to share or use for a decision. Use when reviewing methodology, calculations, comparisons, visuals, caveats, or conclusions.",
+      "name": "validate-data",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/validate-data/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Design, build, revise, or QA quantitative charts and figures. Use when an analytical answer needs visual judgment, whether for an inline answer, report, dashboard, notebook, or artifact.",
+      "name": "visualize-data",
+      "path": ".codex/plugins/cache/openai-curated-remote/data-analytics/0.1.49-2470779139f2/skills/visualize-data/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "VoltAgent architectural patterns and conventions. Covers agents vs workflows, project layout, memory, servers, and observability.",
+      "name": "voltagent-best-practices",
+      "path": ".codex/skills/voltagent-best-practices/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Reference for the VoltAgent class: constructor options, lifecycle methods, and runtime behavior.",
+      "name": "voltagent-core-reference",
+      "path": ".codex/skills/voltagent-core-reference/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Look up VoltAgent documentation embedded in node_modules/@voltagent/core/docs for version-matched docs. Use for API signatures, guides, and examples.",
+      "name": "voltagent-docs-bundle",
+      "path": ".codex/skills/voltagent-docs-bundle/SKILL.md",
+      "source_root": ".codex/skills"
+    },
+    {
+      "description": "Publish local changes to GitHub by confirming scope, committing intentionally, pushing the branch, and opening a draft PR through the GitHub app from this plugin, with `gh` used only as a fallback where connector coverage is insufficient.",
+      "name": "yeet",
+      "path": ".codex/plugins/cache/openai-curated-remote/github/0.1.5/skills/yeet/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    },
+    {
+      "description": "Publish local changes to GitHub by confirming scope, committing intentionally, pushing the branch, and opening a draft PR through the GitHub app from this plugin, with `gh` used only as a fallback where connector coverage is insufficient.",
+      "name": "yeet",
+      "path": ".codex/plugins/cache/openai-curated/github/fef63ecf/skills/yeet/SKILL.md",
+      "source_root": ".codex/plugins/cache"
+    }
+  ],
+  "total_skills": 198
+}

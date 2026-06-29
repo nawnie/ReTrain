@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "project": "Rnv1-ReTrain",
+  "generated_on": "2026-06-29",
+  "routing_policy": {
+    "standing_rule": "Evaluate implicit skill triggers on every non-trivial task before editing files or running long commands.",
+    "selection_rule": "Use the smallest skill set that changes the approach, then read each selected SKILL.md before task work.",
+    "conflict_rule": "Project instructions and HANDOFF.md override generic skill guidance for this workspace."
+  },
+  "project_signals": [
+    "FastAPI backend",
+    "Vite React dashboard",
+    "TensorBoard metrics",
+    "standalone training workspace",
+    "Codex app environment training",
+    "local LoRA QLoRA SFT training runs",
+    "training run receipts and VRAM estimates",
+    "MCP skills plugins tools"
+  ],
+  "scenarios": [
+    {
+      "id": "codex-app-environment-training",
+      "signals": ["Codex", "MCP", "skills", "plugins", "tools", "apps", "connectors", "tool-use dataset"],
+      "skills": ["codex-tooling", "avoid-ai-writing"],
+      "use_when": "Use when adding or changing data that teaches a model how to operate inside Codex.",
+      "project_guardrails": ["Store ReTrain-owned corpora under datasets.", "Do not edit EveryDream trainer internals for app-environment data."],
+      "outputs": ["datasets/codex_app_environment/"],
+      "verification": ["python datasets/codex_app_environment/scripts/validate_codex_app_dataset.py"]
+    },
+    {
+      "id": "local-model-training-runs",
+      "signals": ["training run", "LoRA", "QLoRA", "SFT", "model selection", "dataset selection", "VRAM", "receipt", "run history"],
+      "skills": ["local-ai-dev"],
+      "use_when": "Use when changing trainer launch paths, run planning, local model/dataset discovery, VRAM estimates, or training artifacts.",
+      "project_guardrails": ["Do not load models or start real training unless Shawn explicitly asks.", "Treat Project MoK datasets as external inputs, not workspace ownership.", "Keep training state, runs, models, and weights out of git."],
+      "outputs": ["backend/training_runs.py", "scripts/run_posttrain_bakeoff.py", "training/run_state/"],
+      "verification": ["py -3.10 -m compileall backend scripts", "POST http://127.0.0.1:8000/api/training/runs/plan", "dry-run receipt under training/run_state"]
+    },
+    {
+      "id": "project-skill-routing",
+      "signals": ["PROJECT_SKILLS.md", "projectskill-list", "which skill", "skill routing", "codex build"],
+      "skills": ["projectskill-list"],
+      "use_when": "Use when the local skill map is missing, stale, or directly requested.",
+      "outputs": ["PROJECT_SKILLS.md", "docs/projectskill-list.use-cases.json"],
+      "verification": ["python -m json.tool docs/projectskill-list.use-cases.json"]
+    },
+    {
+      "id": "dashboard-frontend",
+      "signals": ["frontend", "React", "Vite", "dashboard", "layout", "modal", "TensorBoard popup"],
+      "skills": ["build-web-apps:frontend-testing-debugging"],
+      "use_when": "Use for targeted dashboard rendering, layout, or browser behavior changes.",
+      "project_guardrails": ["Keep the first screen focused on training metrics.", "Keep full TensorBoard behind the in-app popup."],
+      "verification": ["cd frontend; npm run build"]
+    },
+    {
+      "id": "backend-fastapi",
+      "signals": ["FastAPI", "backend", "api", "uvicorn", "TensorBoard proxy", "health endpoint"],
+      "skills": [],
+      "use_when": "Use normal coding workflow for backend route and service changes unless another skill is explicitly triggered.",
+      "verification": ["python -m compileall backend", "Invoke-WebRequest http://127.0.0.1:8000/api/health"]
+    },
+    {
+      "id": "training-data-quality",
+      "signals": ["JSONL", "manifest", "eval", "dataset validation", "training corpus"],
+      "skills": ["data-analytics:analyze-data-quality"],
+      "use_when": "Consider for larger audits of corpus quality, coverage, or holdout separation.",
+      "outputs": ["validation report or dataset quality notes"],
+      "verification": ["dataset-specific validator"]
+    },
+    {
+      "id": "openai-codex-docs",
+      "signals": ["OpenAI docs", "Agents SDK", "Responses API", "Codex docs", "API key"],
+      "skills": ["openai-docs"],
+      "use_when": "Use when current OpenAI product or API behavior is needed.",
+      "project_guardrails": ["Use official OpenAI sources for current product details."],
+      "outputs": ["official-doc-grounded implementation notes or code"]
+    }
+  ]
+}

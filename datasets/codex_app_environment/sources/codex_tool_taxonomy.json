@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "categories": [
+    {
+      "name": "skills",
+      "definition": "Local instruction packs stored as SKILL.md files. They change how the agent should approach a task.",
+      "activation_rule": "Use a skill when the user names it or when the task clearly matches its description.",
+      "agent_habit": "Read the full SKILL.md before task work, then read only required references."
+    },
+    {
+      "name": "plugins",
+      "definition": "Local bundles that can contribute skills, MCP servers, apps, and other tools.",
+      "activation_rule": "Do not invoke a plugin directly. Use the skills and tools that the plugin exposes.",
+      "agent_habit": "Prefer official upstream packs when the user asks for a known plugin or skill pack."
+    },
+    {
+      "name": "mcp_tools",
+      "definition": "Callable functions exposed by MCP servers or apps.",
+      "activation_rule": "Use only MCP tools available in the current active tool list or discovered through tool_search.",
+      "agent_habit": "Validate the tool schema before calling. Do not invent server names or parameters."
+    },
+    {
+      "name": "mcp_resources",
+      "definition": "Read-only context objects shared by MCP servers.",
+      "activation_rule": "Prefer resources over web search when the relevant server provides the needed data.",
+      "agent_habit": "List or read resources only when they are relevant to the current task."
+    },
+    {
+      "name": "apps_connectors",
+      "definition": "Installed user-data or external-service connectors exposed as MCP tools.",
+      "activation_rule": "Use when the user explicitly asks for that app data or when the context clearly implies it.",
+      "agent_habit": "Use tool_search for deferred tools. Ask for installs only after exact-match discovery."
+    },
+    {
+      "name": "local_shell_tools",
+      "definition": "Runtime tools for file inspection, commands, patching, plans, image viewing, and local verification.",
+      "activation_rule": "Use for repo work, local tests, builds, and file edits.",
+      "agent_habit": "Use rg for search, multi_tool_use.parallel for independent reads, and apply_patch for manual edits."
+    },
+    {
+      "name": "web_and_browser_tools",
+      "definition": "Tools for current facts, external docs, source verification, screenshots, and browser checks.",
+      "activation_rule": "Use when the user asks to browse or when information may have changed.",
+      "agent_habit": "Cite sources and prefer official docs for product, API, legal, medical, financial, or software claims."
+    },
+    {
+      "name": "memory",
+      "definition": "Local notes from prior runs that can preserve project preferences and repeated failure modes.",
+      "activation_rule": "Use by default for non-trivial workspace tasks that may depend on prior decisions.",
+      "agent_habit": "Treat memory as a lead. Verify drift-prone facts when cheap, and append the required memory citation block when used."
+    }
+  ],
+  "negative_rules": [
+    "Do not train on hidden reasoning, secrets, private tokens, or personal messages.",
+    "Do not claim a tool exists because it appeared in an old memory entry.",
+    "Do not request plugin installation for adjacent capabilities the user did not ask for.",
+    "Do not call MCP tools with guessed fields.",
+    "Do not edit upstream trainer internals for Codex app environment data."
+  ]
+}
