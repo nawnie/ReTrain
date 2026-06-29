@@ -17,8 +17,11 @@
   a ReTrain-owned local SFT/LoRA/QLoRA smoke runner. Keep future trainer changes
   here unless the task is specifically about MoK internals.
 - `frontend/` contains a Vite React app for the ReTrain dashboard.
-- `requirements.txt` lists FastAPI, Uvicorn, httpx, and TensorBoard.
-  `setuptools<81` is pinned because TensorBoard 2.20 still imports
+- `requirements.txt` lists the app dependencies, and
+  `requirements-training.txt` lists the CUDA training stack.
+  `scripts/install_retrain.ps1` creates the project-owned `.venv`, installs
+  dependencies, builds the frontend, validates CUDA visibility, and runs smoke
+  checks. `setuptools<81` is pinned because TensorBoard 2.20 still imports
   `pkg_resources`.
 - `datasets/codex_app_environment/` contains the first ReTrain-owned corpus for
   teaching Codex app environment behavior: skills, plugins, MCP tools, app
@@ -62,7 +65,8 @@
 - The default local starter model is
   `F:\Ai_Models\hf\posttrain_candidates\Qwen--Qwen2.5-Coder-1.5B` when present.
 - Runtime state and heavy artifacts are ignored by git:
-  `training/run_state/`, `training/runs/`, `models/`, and model weight suffixes.
+  `.venv/`, `training/run_state/`, `training/runs/`, `models/`, and model
+  weight suffixes.
 
 ## Codex app training intent
 

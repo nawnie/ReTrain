@@ -9,17 +9,15 @@ Local Windows-first training workbench for LLM/chat fine-tuning, LoRA, and QLoRA
 - Safe dry-run path that writes receipts without loading model weights
 - TensorBoard served from the same app and opened through the dashboard popup
 
-## Setup
+## Install
 
-Use Python 3.10 on this machine. The plain `python` command may point at a different agent environment.
+Use the project installer. It creates `.\.venv`, installs the web app and CUDA
+training stack, installs frontend dependencies, builds the dashboard, validates
+CUDA visibility, and runs smoke checks.
 
 ```powershell
 cd C:\Users\Shawn\Desktop\Rnv1-ReTrain
-py -3.10 -m pip install -r requirements.txt
-cd frontend
-npm install
-npm run build
-cd ..
+.\scripts\install_retrain.ps1
 ```
 
 ## Launch
@@ -34,13 +32,15 @@ Then open:
 http://127.0.0.1:8000
 ```
 
-The startup script expects `frontend\dist\index.html` to exist. If it is missing, run `npm run build` in `frontend\`.
+The startup script expects `frontend\dist\index.html` and `.\.venv` to exist.
+If either is missing, run `.\scripts\install_retrain.ps1`. It will not silently
+fall back to another project venv or global Python.
 
 ## Smoke Checks
 
 ```powershell
 py -3.10 -m compileall backend scripts
-py -3.10 datasets\codex_app_environment\scripts\validate_codex_app_dataset.py
+.\.venv\Scripts\python.exe datasets\codex_app_environment\scripts\validate_codex_app_dataset.py
 cd frontend
 npm run build
 cd ..

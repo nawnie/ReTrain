@@ -6,25 +6,31 @@ param(
 $ErrorActionPreference = "Stop"
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $FrontendIndex = Join-Path $Root "frontend\dist\index.html"
-$Requirements = Join-Path $Root "requirements.txt"
+$Python = Join-Path $Root ".venv\Scripts\python.exe"
 
 if (-not (Test-Path -LiteralPath $FrontendIndex)) {
-    Write-Error "Frontend build is missing. Run: cd frontend; npm install; npm run build"
+    Write-Error "Frontend build is missing. Run: .\scripts\install_retrain.ps1"
 }
 
-if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
-    Write-Error "Python launcher 'py' was not found. Install Python 3.10 or put it on PATH."
+if (-not (Test-Path -LiteralPath $Python)) {
+    Write-Error "ReTrain .venv is missing. Run: .\scripts\install_retrain.ps1"
 }
 
 Push-Location $Root
 try {
-    & py -3.10 -c "import fastapi, uvicorn, tensorboard" 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "Python dependencies are missing. Run: py -3.10 -m pip install -r `"$Requirements`""
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    $dependencyCheck = & $Python -c "import fastapi, uvicorn, tensorboard, torch, transformers, accelerate, peft, bitsandbytes" 2>&1
+    $dependencyExitCode = $LASTEXITCODE
+    $ErrorActionPreference = $previousErrorActionPreference
+    if ($dependencyExitCode -ne 0) {
+        $dependencyCheck | ForEach-Object { Write-Host $_ }
+        Write-Error "ReTrain .venv is missing app or training dependencies. Run: .\scripts\install_retrain.ps1"
     }
 
     Write-Host "Starting Rnv1 ReTrain at http://$HostAddress`:$Port"
-    & py -3.10 -m uvicorn backend.main:app --host $HostAddress --port $Port
+    $ErrorActionPreference = "Continue"
+    & $Python -m uvicorn backend.main:app --host $HostAddress --port $Port
 }
 finally {
     Pop-Location
