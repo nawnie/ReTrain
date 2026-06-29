@@ -186,6 +186,32 @@ const numberFields: Array<keyof TrainingConfig> = [
   "freeVramGb",
 ];
 
+function scrubLocalPaths(value: string) {
+  return value
+    .replace(/C:\\Users\\[^\\]+\\Desktop\\Rnv1-ReTrain\\/g, "Rnv1-ReTrain\\")
+    .replace(/C:\\Users\\[^\\]+\\Desktop\\MoK-Project\\/g, "MoK-Project\\")
+    .replace(/C:\\Users\\[^\\]+\\/g, "%USERPROFILE%\\")
+    .replace(/F:\\Ai_Models\\hf\\posttrain_candidates\\/g, "HF candidates\\")
+    .replace(/F:\\datasets\\/g, "datasets\\")
+    .replace(/Rnv1-ReTrain\\\.venv\\Scripts\\python\.exe/g, "python")
+    .replace(/Rnv1-ReTrain\\scripts\\run_posttrain_bakeoff\.py/g, "scripts\\run_posttrain_bakeoff.py")
+    .replace(/MoK-Project\\training\\posttrain_bakeoff\\data/g, "MoK-Project\\...\\posttrain_bakeoff\\data")
+    .replace(/MoK-Project\\training\\core_mok\\splits/g, "MoK-Project\\...\\core_mok\\splits")
+    .replace(/Rnv1-ReTrain\\training\\runs\\([^\s"]+)/g, "Rnv1-ReTrain\\...\\$1")
+    .replace(/Rnv1-ReTrain\\training\\run_state\\([^\s"]+)/g, "Rnv1-ReTrain\\...\\$1");
+}
+
+function compactPath(value?: string) {
+  if (!value) return "-";
+  const scrubbed = scrubLocalPaths(value);
+  const parts = scrubbed.split(/[\\/]+/).filter(Boolean);
+  if ((parts[0] === "Rnv1-ReTrain" || parts[0] === "MoK-Project") && parts.includes("training")) {
+    return `${parts[0]}\\...\\${parts[parts.length - 1]}`;
+  }
+  if (parts.length <= 3) return scrubbed;
+  return `${parts[0]}\\...\\${parts[parts.length - 2]}\\${parts[parts.length - 1]}`;
+}
+
 export function App() {
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [overview, setOverview] = useState<OverviewResponse | null>(null);
@@ -560,14 +586,14 @@ export function App() {
                   <div className={`gate ${item.state}`} key={`${item.gate}-${item.detail}`}>
                     <span>{item.gate}</span>
                     <strong>{item.state}</strong>
-                    <small>{item.detail}</small>
+                    <small>{compactPath(item.detail)}</small>
                   </div>
                 ))}
               </div>
 
               <div className="commandBox">
                 <span>Command</span>
-                <code>{plan?.command ?? "No plan yet"}</code>
+                <code>{plan?.command ? scrubLocalPaths(plan.command) : "No plan yet"}</code>
               </div>
             </section>
 
@@ -633,7 +659,7 @@ export function App() {
               <PathLine label="Log" value={selectedRun?.paths.logPath} />
               <PathLine label="Metrics" value={selectedRun?.metrics.latestMetricsPath} />
             </div>
-            <pre className="logBox">{selectedRun?.logTail || "No log output yet"}</pre>
+            <pre className="logBox">{selectedRun?.logTail ? scrubLocalPaths(selectedRun.logTail) : "No log output yet"}</pre>
           </section>
         </section>
       </div>
@@ -678,7 +704,7 @@ function PathLine({ label, value }: { label: string; value?: string }) {
   return (
     <div className="pathLine">
       <span>{label}</span>
-      <strong>{value || "-"}</strong>
+      <strong>{compactPath(value)}</strong>
     </div>
   );
 }

@@ -28,6 +28,18 @@ TENSORBOARD_PORT: Final = int(
     os.environ.get("RNV1_TENSORBOARD_PORT", os.environ.get("MOK_TENSORBOARD_PORT", "6006"))
 )
 TENSORBOARD_BASE: Final = f"http://{TENSORBOARD_HOST}:{TENSORBOARD_PORT}"
+TENSORBOARD_WARNING_FILTER: Final = """<script>
+(() => {
+  const originalWarn = console.warn.bind(console);
+  console.warn = (...args) => {
+    if (args.some((arg) => String(arg).includes("Multiple instances of Three.js being imported."))) {
+      return;
+    }
+    originalWarn(...args);
+  };
+})();
+</script>"""
+TENSORBOARD_THREE_WARNING: Final = "WARNING: Multiple instances of Three.js being imported."
 
 app = FastAPI(title="Rnv1 ReTrain Dashboard", version="0.2.0")
 app.add_middleware(
@@ -83,6 +95,33 @@ def _dataset_path(relative_path: str | None) -> Path | None:
     if candidate.is_absolute() or ".." in candidate.parts:
         return None
     return CODEX_APP_DATASET_DIR / candidate
+
+
+def _filter_tensorboard_noise(content: bytes, content_type: str | None) -> bytes:
+    if not content_type:
+        return content
+    normalized_type = content_type.lower()
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError:
+        return content
+
+    if "text/javascript" in normalized_type or "application/javascript" in normalized_type:
+        text = text.replace(f'console.warn("{TENSORBOARD_THREE_WARNING}")', "void 0")
+        return text.encode("utf-8")
+
+    if "text/html" not in normalized_type:
+        return content
+    if TENSORBOARD_THREE_WARNING in text:
+        return content
+    text = text.replace("?_file_hash=", "?rnv1_proxy=1&_file_hash=")
+    if "<head>" in text:
+        text = text.replace("<head>", f"<head>{TENSORBOARD_WARNING_FILTER}", 1)
+    elif "<html>" in text:
+        text = text.replace("<html>", f"<html>{TENSORBOARD_WARNING_FILTER}", 1)
+    else:
+        text = f"{TENSORBOARD_WARNING_FILTER}{text}"
+    return text.encode("utf-8")
 
 
 async def _ensure_tensorboard() -> tuple[bool, str | None]:
@@ -320,11 +359,17 @@ async def proxy_tensorboard(path: str, request: Request) -> Response:
     response_headers = {
         key: value for key, value in upstream.headers.items() if key.lower() not in excluded_headers
     }
+    for key in list(response_headers):
+        if key.lower() in {"cache-control", "expires", "etag", "last-modified"}:
+            response_headers.pop(key)
+    response_headers["cache-control"] = "no-store"
+    content_type = upstream.headers.get("content-type")
+    response_content = _filter_tensorboard_noise(upstream.content, content_type)
     return Response(
-        content=upstream.content,
+        content=response_content,
         status_code=upstream.status_code,
         headers=response_headers,
-        media_type=upstream.headers.get("content-type"),
+        media_type=content_type,
     )
 
 
