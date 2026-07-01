@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import retrainIconUrl from "./assets/retrain-icon.jpg";
 
 type HealthResponse = {
   ok: boolean;
@@ -26,10 +27,13 @@ type ModelOption = {
   label: string;
   path: string;
   family: string;
+  targetType: string;
   sizeB: number;
   runnerKey: string;
+  hfId: string;
   exists: boolean;
   source: string;
+  notes: string[];
 };
 
 type Dependency = {
@@ -44,6 +48,8 @@ type TrainingConfig = {
   datasetPath: string;
   modelId: string;
   modelPath: string;
+  targetType: string;
+  datasetFormat: string;
   method: string;
   precision: string;
   contextLength: number;
@@ -213,6 +219,9 @@ function compactPath(value?: string) {
 }
 
 export function App() {
+  const isWarRoomRoute =
+    typeof window !== "undefined" && new URLSearchParams(window.location.search).get("view") === "warroom";
+  const [viewMode, setViewMode] = useState<"dashboard" | "warroom">(() => (isWarRoomRoute ? "warroom" : "dashboard"));
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [overview, setOverview] = useState<OverviewResponse | null>(null);
   const [config, setConfig] = useState<TrainingConfig | null>(null);
@@ -375,6 +384,28 @@ export function App() {
     }
   };
 
+  const showDashboard = () => {
+    setViewMode("dashboard");
+    if (isWarRoomRoute) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("view");
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+  };
+
+  const showWarRoom = () => {
+    setViewMode("warroom");
+  };
+
+  const openWarRoomPopout = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("view", "warroom");
+    const popup = window.open(url.toString(), "retrain-war-room", "width=1440,height=920,left=80,top=80");
+    if (!popup) {
+      setError("The browser blocked the War Room pop-out.");
+    }
+  };
+
   const setDataset = (datasetId: string) => {
     const dataset = overview?.datasets.find((item) => item.id === datasetId);
     setConfig((current) =>
@@ -396,6 +427,7 @@ export function App() {
             ...current,
             modelId,
             modelPath: model?.exists ? model.path : current.modelPath,
+            targetType: model?.targetType ?? current.targetType,
           }
         : current,
     );
@@ -403,14 +435,62 @@ export function App() {
 
   const selectedDataset = overview?.datasets.find((item) => item.id === config?.datasetId);
   const selectedModel = overview?.models.find((item) => item.id === config?.modelId);
+  const readyGates = plan?.gates.filter((item) => item.state === "ready").length ?? 0;
+  const blockedGates = plan?.gates.filter((item) => item.state === "blocked").length ?? 0;
+  const warningGates = plan?.gates.filter((item) => item.state === "warning").length ?? 0;
+  const totalGates = plan?.gates.length ?? 0;
+  const readyPercent = totalGates ? Math.round((readyGates / totalGates) * 100) : 0;
+  const fitPercent = Math.min(100, Math.max(0, plan?.estimate.percent ?? 0));
+  const dependencyReadyCount = overview?.dependencies.filter((item) => item.available).length ?? 0;
+  const latestRunTime = selectedRun ? new Date(selectedRun.updatedAt).toLocaleString([], { dateStyle: "short", timeStyle: "short" }) : "No runs yet";
+  const nextActionTitle = plan?.startEnabled
+    ? config?.dryRun
+      ? "Ready for a dry check"
+      : "Ready for confirmed training"
+    : blockedGates
+      ? "Resolve blocked gates"
+      : warningGates
+        ? "Review warnings before launch"
+        : "Plan the run";
+  const nextActionCopy = plan?.startEnabled
+    ? "The selected model, dataset, target, and VRAM budget are in a launchable state."
+    : "The dashboard will keep planning as you adjust model, dataset, target type, and budget controls.";
+
+  if (viewMode === "warroom") {
+    return <LlmWarRoom onExit={showDashboard} onPopOut={openWarRoomPopout} isPopout={isWarRoomRoute} />;
+  }
 
   return (
     <main className="shell">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Rnv1 ReTrain</p>
-          <h1>Training Runs</h1>
+        <div className="brandLockup">
+          <img src={retrainIconUrl} alt="" className="appIcon" />
+          <div>
+            <p className="eyebrow">Rnv1 ReTrain</p>
+            <h1>Lab Console</h1>
+            <p className="lede">Local training workbench for small chat models, prompt helpers, T5 variants, and text encoders.</p>
+          </div>
         </div>
+        <nav className="modeTabs" aria-label="Dashboard views">
+          <button type="button" className="modeTab active" onClick={showDashboard}>
+            Plan
+          </button>
+          <button type="button" className="modeTab">
+            Run
+          </button>
+          <button type="button" className="modeTab">
+            Metrics
+          </button>
+          <button type="button" className="modeTab">
+            Artifacts
+          </button>
+          <button type="button" className="modeTab monitor" onClick={showWarRoom}>
+            War Room
+          </button>
+          <button type="button" className="modeTab popout" onClick={openWarRoomPopout}>
+            Pop out
+          </button>
+        </nav>
         <div className="actions">
           <button type="button" onClick={refresh} disabled={busy}>
             Refresh
@@ -424,13 +504,53 @@ export function App() {
         </div>
       </header>
 
+      <section className="decisionBand" aria-label="Training decision summary">
+        <div className="nextActionPanel">
+          <div>
+            <p className="eyebrow">Next action</p>
+            <h2>{nextActionTitle}</h2>
+            <p>{nextActionCopy}</p>
+          </div>
+          <div className="buttonRow">
+            <button type="button" onClick={planRun} disabled={busy || !config}>
+              Plan
+            </button>
+            <button className="primaryButton" type="button" onClick={startRun} disabled={!canStartRun} title={startBlockedReason}>
+              {config?.dryRun ? "Run Dry Check" : "Start Confirmed Run"}
+            </button>
+          </div>
+        </div>
+        <div className="readinessPanel">
+          <div className="readinessDial" style={{ "--ready": `${readyPercent}%` } as CSSProperties}>
+            <strong>{readyPercent}%</strong>
+            <span>ready</span>
+          </div>
+          <div className="readinessStack">
+            <span>{readyGates} gates ready</span>
+            <span>{warningGates} warnings</span>
+            <span>{blockedGates} blocked</span>
+          </div>
+        </div>
+        <div className="fitPanel">
+          <div>
+            <span>VRAM fit</span>
+            <strong>{plan?.estimate.fitState ?? "unplanned"}</strong>
+          </div>
+          <div className="vramTrack large">
+            <span style={{ width: `${fitPercent}%` }} />
+          </div>
+          <small>{plan ? `${plan.estimate.estimatedGb} GB estimated / ${plan.estimate.limitGb} GB limit` : "Plan a run to estimate VRAM."}</small>
+        </div>
+      </section>
+
       <section className="metricStrip" aria-label="Training status">
-        <Metric label="FastAPI" value={health?.ok ? "Online" : "Checking"} tone={health?.ok ? "good" : "warn"} />
+        <Metric label="App" value={health?.ok ? "Online" : "Checking"} tone={health?.ok ? "good" : "warn"} />
         <Metric label="Active runs" value={activeRuns} tone={activeRuns ? "warn" : "neutral"} />
         <Metric label="Latest status" value={selectedRun?.status ?? "none"} tone={toneForStatus(selectedRun?.status)} />
         <Metric label="Fit" value={plan?.estimate.fitState ?? "unplanned"} tone={toneForFit(plan?.estimate.fitState)} />
+        <Metric label="Dependencies" value={overview ? `${dependencyReadyCount}/${overview.dependencies.length}` : "-"} tone="neutral" />
         <Metric label="Scalar tags" value={scalarCount} tone={scalarCount ? "good" : "neutral"} />
-        <Metric label="GPU" value={overview?.hardware.gpu ?? "unknown"} tone="neutral" wide />
+        <Metric label="Latest update" value={latestRunTime} tone="neutral" wide />
       </section>
 
       {error ? <p className="error">{error}</p> : null}
@@ -473,6 +593,28 @@ export function App() {
                 </select>
               </label>
               <label className="field">
+                <span>Target</span>
+                <select value={config.targetType} onChange={(event) => updateConfig("targetType", event.target.value)}>
+                  <option value="causal_lm">Chat LLM</option>
+                  <option value="prompt_helper_lm">Prompt helper LM</option>
+                  <option value="seq2seq_t5">T5 / Seq2Seq</option>
+                  <option value="text_encoder">Text encoder</option>
+                  <option value="clip_text">CLIP text</option>
+                  <option value="blip_text">BLIP text</option>
+                </select>
+              </label>
+              <label className="field">
+                <span>Data format</span>
+                <select value={config.datasetFormat} onChange={(event) => updateConfig("datasetFormat", event.target.value)}>
+                  <option value="auto">Auto</option>
+                  <option value="messages">Messages</option>
+                  <option value="prompt_completion">Prompt/completion</option>
+                  <option value="text">Text</option>
+                  <option value="text_pairs">Text pairs</option>
+                  <option value="caption_pairs">Caption pairs</option>
+                </select>
+              </label>
+              <label className="field">
                 <span>Method</span>
                 <select value={config.method} onChange={(event) => updateConfig("method", event.target.value)}>
                   <option value="qlora">QLoRA</option>
@@ -490,17 +632,25 @@ export function App() {
                 </select>
               </label>
 
-              {numberFields.map((field) => (
-                <label className="field" key={field}>
-                  <span>{labelForField(field)}</span>
-                  <input
-                    type="number"
-                    value={Number(config[field])}
-                    step={field === "learningRate" ? "0.000001" : "1"}
-                    onChange={(event) => updateConfig(field, Number(event.target.value) as never)}
-                  />
-                </label>
-              ))}
+              <details className="advancedControls">
+                <summary>
+                  <span>Budget and limits</span>
+                  <strong>Context, VRAM, rows</strong>
+                </summary>
+                <div className="controlGrid nested">
+                  {numberFields.map((field) => (
+                    <label className="field" key={field}>
+                      <span>{labelForField(field)}</span>
+                      <input
+                        type="number"
+                        value={Number(config[field])}
+                        step={field === "learningRate" ? "0.000001" : "1"}
+                        onChange={(event) => updateConfig(field, Number(event.target.value) as never)}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </details>
 
               <label className="check">
                 <input
@@ -539,7 +689,7 @@ export function App() {
             <div className="loadingBox">Loading</div>
           )}
 
-          <div className="buttonRow">
+          <div className="buttonRow panelActions">
             <button type="button" onClick={planRun} disabled={busy || !config}>
               Plan
             </button>
@@ -568,6 +718,10 @@ export function App() {
                   <strong>{selectedModel?.label ?? "none"}</strong>
                 </div>
                 <div>
+                  <span>Target</span>
+                  <strong>{targetLabel(config?.targetType ?? selectedModel?.targetType)}</strong>
+                </div>
+                <div>
                   <span>Estimate</span>
                   <strong>{plan ? `${plan.estimate.estimatedGb} GB` : "-"}</strong>
                 </div>
@@ -591,10 +745,13 @@ export function App() {
                 ))}
               </div>
 
-              <div className="commandBox">
-                <span>Command</span>
+              <details className="commandBox">
+                <summary>
+                  <span>Command preview</span>
+                  <strong>Advanced</strong>
+                </summary>
                 <code>{plan?.command ? scrubLocalPaths(plan.command) : "No plan yet"}</code>
-              </div>
+              </details>
             </section>
 
             <section className="runPanel">
@@ -659,7 +816,13 @@ export function App() {
               <PathLine label="Log" value={selectedRun?.paths.logPath} />
               <PathLine label="Metrics" value={selectedRun?.metrics.latestMetricsPath} />
             </div>
-            <pre className="logBox">{selectedRun?.logTail ? scrubLocalPaths(selectedRun.logTail) : "No log output yet"}</pre>
+            <details className="logDrawer">
+              <summary>
+                <span>Log tail</span>
+                <strong>Advanced</strong>
+              </summary>
+              <pre className="logBox">{selectedRun?.logTail ? scrubLocalPaths(selectedRun.logTail) : "No log output yet"}</pre>
+            </details>
           </section>
         </section>
       </div>
@@ -726,6 +889,18 @@ function labelForField(field: keyof TrainingConfig) {
   return labels[field] ?? field;
 }
 
+function targetLabel(targetType?: string) {
+  const labels: Record<string, string> = {
+    causal_lm: "Chat LLM",
+    prompt_helper_lm: "Prompt helper",
+    seq2seq_t5: "T5 / Seq2Seq",
+    text_encoder: "Text encoder",
+    clip_text: "CLIP text",
+    blip_text: "BLIP text",
+  };
+  return labels[targetType ?? ""] ?? targetType ?? "-";
+}
+
 function toneForStatus(status?: string) {
   if (!status || status === "none") return "neutral";
   if (["ready", "completed", "dry_run_completed"].includes(status)) return "good";
@@ -747,4 +922,193 @@ function metricValue(run: RunRecord | null, key: string, suffix = "") {
     return `${Math.abs(value) > 100 ? value.toFixed(1) : value.toPrecision(4)}${suffix}`;
   }
   return `${value}${suffix}`;
+}
+
+function LlmWarRoom({
+  onExit,
+  onPopOut,
+  isPopout = false,
+}: {
+  onExit: () => void;
+  onPopOut: () => void;
+  isPopout?: boolean;
+}) {
+  const heatmapCells = useMemo(
+    () =>
+      Array.from({ length: 128 }, (_, index) => {
+        const classes = ["bg-[#00ff66]", "bg-[#00ff66]/60", "bg-[#00ff66]/20", "bg-[#0088ff]", "bg-[#142820]"];
+        return classes[(index * 7 + Math.floor(index / 9)) % classes.length];
+      }),
+    [],
+  );
+
+  return (
+    <main className="min-h-screen w-screen bg-[#05070a] text-[#00ff66] font-mono text-xs select-none p-3 flex flex-col tracking-wider overflow-x-hidden">
+      <header className="border border-[#142820] bg-[#07130e] p-3 flex flex-col xl:flex-row justify-between xl:items-center mb-3 shadow-[0_0_15px_rgba(0,255,102,0.03)] gap-3">
+        <div className="flex flex-wrap items-center gap-3 min-w-0">
+          <span className="text-white font-black text-sm tracking-widest animate-pulse whitespace-nowrap">
+            HYPERION // CORE_TRN
+          </span>
+          <span className="text-[#0088ff] border border-[#004488] px-2 py-0.5 bg-[#001122] whitespace-nowrap">
+            RUN_ID: L3_8B_BASE_04
+          </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-3 xl:gap-6 text-[#558866]">
+          <div>
+            EPOCH: <strong>3 / 10</strong>
+          </div>
+          <div>
+            TOKENS: <strong>842.11 B</strong>
+          </div>
+          <div>
+            CLUSTER LOAD: <strong className="text-[#ff3366] font-bold">91.4%</strong>
+          </div>
+          <div className="text-white bg-[#142820] px-2 py-0.5 border border-[#224433] animate-pulse">LIVE_FEED</div>
+          {!isPopout ? (
+            <button
+              type="button"
+              className="min-h-0 border border-[#004488] bg-[#001122] px-3 py-1 text-[#0088ff] hover:bg-[#061b30]"
+              onClick={onPopOut}
+            >
+              Pop Out
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className="min-h-0 border border-[#224433] bg-[#030705] px-3 py-1 text-[#00ff66] hover:bg-[#07130e]"
+            onClick={onExit}
+          >
+            Lab Console
+          </button>
+        </div>
+      </header>
+
+      <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-3 min-h-0">
+        <div className="xl:col-span-4 flex flex-col gap-3 min-w-0">
+          <TailwindSection title="SYSTEM_TELEMETRY">
+            <div className="grid grid-cols-2 gap-2 text-slate-400">
+              <WarStat label="THROUGHPUT" value="142,510 t/s" color="text-[#00ff66]" />
+              <WarStat label="LEARNING RATE" value="1.842e-5" />
+              <WarStat label="GRADIENT NORM" value="0.2144" />
+              <WarStat label="TENSOR PARALLEL" value="8-WAY" color="text-[#0088ff]" />
+            </div>
+            <div className="mt-4 pt-3 border-t border-[#142820]">
+              <div className="flex justify-between mb-1 text-[#558866]">
+                <span>DATASET PROGRESS // FineWeb-EDU</span>
+                <span>84.21%</span>
+              </div>
+              <div className="w-full bg-[#0a1410] border border-[#142820] h-3 p-0.5">
+                <div
+                  className="bg-gradient-to-r from-[#00ff66] to-[#0088ff] h-full shadow-[0_0_8px_rgba(0,255,102,0.5)]"
+                  style={{ width: "84.21%" }}
+                />
+              </div>
+            </div>
+          </TailwindSection>
+
+          <TailwindSection title="H100_INTERCONNECT_TOPOLOGY (8-NODE CLUSTER)">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <WarGpuNode id="00" load={98} temp={74} state="CRIT" />
+              <WarGpuNode id="01" load={96} temp={72} state="OK" />
+              <WarGpuNode id="02" load={95} temp={71} state="OK" />
+              <WarGpuNode id="03" load={95} temp={75} state="OK" />
+              <WarGpuNode id="04" load={97} temp={73} state="OK" />
+              <WarGpuNode id="05" load={96} temp={70} state="OK" />
+              <WarGpuNode id="06" load={14} temp={42} state="WARN" />
+              <WarGpuNode id="07" load={94} temp={72} state="OK" />
+            </div>
+            <div className="mt-2 text-xs text-[#558866] flex flex-wrap justify-between gap-3">
+              <span>InfiniBand Quantum-2 Rate: 400Gb/s</span>
+              <span className="text-[#ff3366] animate-pulse">LINK_06 DEGRADED</span>
+            </div>
+          </TailwindSection>
+        </div>
+
+        <div className="xl:col-span-8 flex flex-col gap-3 min-w-0">
+          <section className="min-h-[360px] xl:flex-1 border border-[#142820] bg-[#030705] p-3 flex flex-col relative">
+            <div className="static xl:absolute xl:top-2 xl:right-3 text-[#558866] text-[10px] mb-2 xl:mb-0">
+              VISUALIZER // LOSS_STABILITY
+            </div>
+            <h2 className="text-white border-b border-[#142820] pb-1 mb-2 font-bold flex items-center text-xs">
+              <span className="inline-block w-2 h-2 bg-[#00ff66] mr-2" />
+              REAL-TIME LOSS MATRIX TRACKER
+            </h2>
+            <div className="flex-1 flex flex-col justify-end gap-1 font-mono text-[10px] text-[#00ff66]/70">
+              <p>2.40 | *</p>
+              <p>2.00 |   *   *</p>
+              <p>1.60 |         *</p>
+              <p>1.30 |           *   *   .</p>
+              <p>1.10 |                   *   .   .</p>
+              <p>0.95 |                           * * * _ _ _ _</p>
+              <div className="border-t border-[#142820] pt-1 grid grid-cols-4 gap-2 text-[#558866]">
+                <span>0k STEPS</span>
+                <span>150k STEPS</span>
+                <span>300k STEPS</span>
+                <span>450k STEPS</span>
+              </div>
+            </div>
+          </section>
+
+          <section className="min-h-44 border border-[#142820] bg-[#030705] p-3 flex flex-col">
+            <h2 className="text-white border-b border-[#142820] pb-1 mb-2 font-bold text-xs">
+              ATTENTION HEAD ACTIVATION WEIGHTS (LIVE SAMPLING)
+            </h2>
+            <div className="grid grid-cols-32 gap-1 flex-1 items-center">
+              {heatmapCells.map((cell, index) => (
+                <div className={`h-3 w-full ${cell} rounded-sm`} key={index} />
+              ))}
+            </div>
+          </section>
+
+          <section className="h-40 border border-[#142820] bg-[#020403] p-3 font-mono text-[11px] text-[#00ff66] overflow-y-auto space-y-1">
+            <p className="text-[#558866]">[00:14:02] INITIALIZING BACKWARD PASS // ALL-REDUCE GRADIENT COLLECTIVE</p>
+            <p>[00:14:03] STEP 412,901 | LOSS: 0.9412 | PERPLEXITY: 2.563 | GRAD_NORM: 0.211</p>
+            <p>[00:14:04] STEP 412,902 | LOSS: 0.9398 | PERPLEXITY: 2.559 | GRAD_NORM: 0.214</p>
+            <p className="text-[#ff3366]">[00:14:05] NCCL WARN: Node-06 interconnect speed dropped below 200Gb/s; retrying lane...</p>
+            <p className="text-[#0088ff]">[00:14:06] CHECKPOINT TRIGGER: serializing tensor state to master node target block...</p>
+          </section>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function TailwindSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="border border-[#142820] bg-[#030705] p-3 flex flex-col">
+      <div className="text-white font-bold tracking-widest border-b border-[#142820] pb-1.5 mb-3 flex justify-between items-center">
+        <span>// {title}</span>
+        <span className="text-[10px] text-[#558866]">SYS_REMOTE</span>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function WarStat({ label, value, color = "text-white" }: { label: string; value: string; color?: string }) {
+  return (
+    <div className="bg-[#07130e] border border-[#142820] p-2 flex flex-col justify-between">
+      <span className="text-[9px] text-[#558866] block mb-1">{label}</span>
+      <strong className={`text-sm font-black font-mono ${color}`}>{value}</strong>
+    </div>
+  );
+}
+
+function WarGpuNode({ id, load, temp, state }: { id: string; load: number; temp: number; state: "OK" | "WARN" | "CRIT" }) {
+  const statusColor =
+    state === "OK" ? "border-[#00ff66] text-[#00ff66]" : state === "WARN" ? "border-[#ffaa00] text-[#ffaa00]" : "border-[#ff3366] text-[#ff3366]";
+  const bgColor = state === "OK" ? "bg-[#00ff66]/5" : state === "WARN" ? "bg-[#ffaa00]/5" : "bg-[#ff3366]/5";
+
+  return (
+    <div className={`border p-1.5 ${statusColor} ${bgColor} flex flex-col justify-between h-14`}>
+      <div className="flex justify-between text-[9px]">
+        <span>H100_{id}</span>
+        <strong className="font-bold">{state}</strong>
+      </div>
+      <div className="text-right">
+        <span className="text-white font-bold text-sm">{load}%</span>
+        <span className="text-[9px] block text-[#558866]">{temp} C</span>
+      </div>
+    </div>
+  );
 }

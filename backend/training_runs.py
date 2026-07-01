@@ -17,6 +17,7 @@ from typing import Any, Final
 ROOT_DIR: Final = Path(__file__).resolve().parents[1]
 MOK_ROOT: Final = Path(r"C:\Users\Shawn\Desktop\MoK-Project")
 RUNNER_SCRIPT: Final = ROOT_DIR / "scripts" / "run_posttrain_bakeoff.py"
+TEXT_TARGET_RUNNER_SCRIPT: Final = ROOT_DIR / "scripts" / "run_text_target_training.py"
 RUN_STATE_ROOT: Final = ROOT_DIR / "training" / "run_state"
 RUN_OUTPUT_ROOT: Final = ROOT_DIR / "training" / "runs"
 RETRAIN_MODEL_ROOT: Final = ROOT_DIR / "models"
@@ -29,28 +30,139 @@ METHOD_TO_RUNNER: Final = {
     "lora": "lora",
     "qlora": "qlora",
 }
+RUNNER_READY_TARGETS: Final = {"causal_lm", "prompt_helper_lm", "seq2seq_t5", "text_encoder"}
+SUPPORTED_TARGET_TYPES: Final = {
+    "causal_lm",
+    "prompt_helper_lm",
+    "seq2seq_t5",
+    "text_encoder",
+    "clip_text",
+    "blip_text",
+}
+DATASET_FORMATS: Final = {"auto", "messages", "prompt_completion", "text", "text_pairs", "caption_pairs"}
 
 MODEL_PRESETS: Final = {
+    "smollm2-135m-prompt-helper": {
+        "label": "SmolLM2 135M prompt helper",
+        "size_b": 0.135,
+        "family": "smollm2",
+        "target_type": "prompt_helper_lm",
+        "runner_key": "",
+        "hf_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+        "path": HF_CANDIDATE_ROOT / "HuggingFaceTB--SmolLM2-135M-Instruct",
+        "notes": ["Small prompt-helper candidate for rewrite, routing, and prompt expansion jobs."],
+    },
+    "pythia-160m-prompt-helper": {
+        "label": "Pythia 160M prompt helper",
+        "size_b": 0.16,
+        "family": "pythia",
+        "target_type": "prompt_helper_lm",
+        "runner_key": "",
+        "hf_id": "EleutherAI/pythia-160m",
+        "path": HF_CANDIDATE_ROOT / "EleutherAI--pythia-160m",
+        "notes": ["Tiny local LM candidate when a plain decoder model is enough."],
+    },
+    "google-t5-efficient-tiny": {
+        "label": "Google T5 Efficient Tiny",
+        "size_b": 0.01558,
+        "family": "t5-efficient",
+        "target_type": "seq2seq_t5",
+        "runner_key": "",
+        "hf_id": "google/t5-efficient-tiny",
+        "path": HF_CANDIDATE_ROOT / "google--t5-efficient-tiny",
+        "notes": ["Tiny T5 encoder-decoder candidate for text-to-text prompt helpers."],
+    },
+    "google-t5-efficient-mini": {
+        "label": "Google T5 Efficient Mini",
+        "size_b": 0.031,
+        "family": "t5-efficient",
+        "target_type": "seq2seq_t5",
+        "runner_key": "",
+        "hf_id": "google/t5-efficient-mini",
+        "path": HF_CANDIDATE_ROOT / "google--t5-efficient-mini",
+        "notes": ["Small T5-style text-to-text target; keep it separate from diffusion encoder swaps."],
+    },
+    "google-t5-efficient-small": {
+        "label": "Google T5 Efficient Small",
+        "size_b": 0.06,
+        "family": "t5-efficient",
+        "target_type": "seq2seq_t5",
+        "runner_key": "",
+        "hf_id": "google/t5-efficient-small",
+        "path": HF_CANDIDATE_ROOT / "google--t5-efficient-small",
+        "notes": ["Light T5-style target for prompt helper and text transform tasks."],
+    },
+    "openai-clip-vit-large-patch14-text": {
+        "label": "CLIP-L text encoder",
+        "size_b": 0.123,
+        "family": "clip",
+        "target_type": "clip_text",
+        "runner_key": "",
+        "hf_id": "openai/clip-vit-large-patch14",
+        "path": HF_CANDIDATE_ROOT / "openai--clip-vit-large-patch14",
+        "notes": ["AIWF uses CLIP-L with Flux/SD-style text conditioning; train only the text side unless a paired-caption job is added."],
+    },
+    "salesforce-blip-image-captioning-base-text": {
+        "label": "BLIP caption text side",
+        "size_b": 0.247,
+        "family": "blip",
+        "target_type": "blip_text",
+        "runner_key": "",
+        "hf_id": "Salesforce/blip-image-captioning-base",
+        "path": HF_CANDIDATE_ROOT / "Salesforce--blip-image-captioning-base",
+        "notes": ["BLIP/VLM text-side candidate for caption and prompt-helper work; not image generator training."],
+    },
+    "wan-umt5-text-encoder": {
+        "label": "Wan UMT5 text encoder",
+        "size_b": 4.7,
+        "family": "umt5",
+        "target_type": "text_encoder",
+        "runner_key": "",
+        "hf_id": "",
+        "path": Path(r"F:\AIWF_Studio\models\wan\Wan2.2-TI2V-5B-Diffusers\text_encoder"),
+        "notes": ["AIWF Wan uses UMT5-specific text encoders; do not substitute generic Flux or SD3 T5 files."],
+        "execution_blocked": True,
+    },
+    "ltx-gemma-text-encoder": {
+        "label": "LTX Gemma text encoder",
+        "size_b": 12.0,
+        "family": "gemma-text-encoder",
+        "target_type": "text_encoder",
+        "runner_key": "",
+        "hf_id": "google/gemma-3-12b-it-qat-q4_0-unquantized",
+        "path": Path(r"F:\AIWF_Studio\models\ltx\text_encoder\gemma-3-12b-it-qat-q4_0-unquantized"),
+        "notes": ["AIWF LTX needs Gemma hidden states; this is cataloged for compatibility, not a light default."],
+        "execution_blocked": True,
+    },
     "qwen2.5-coder-1.5b": {
         "label": "Qwen2.5-Coder 1.5B",
         "size_b": 1.5,
         "family": "qwen-coder",
+        "target_type": "causal_lm",
         "runner_key": "qwen2.5-coder-1.5b",
+        "hf_id": "",
         "path": HF_CANDIDATE_ROOT / "Qwen--Qwen2.5-Coder-1.5B",
+        "notes": ["Current ReTrain runner-ready starter for local SFT/LoRA/QLoRA."],
     },
     "smollm3-3b-instruct": {
         "label": "SmolLM3 3B",
         "size_b": 3.0,
         "family": "smollm3",
+        "target_type": "causal_lm",
         "runner_key": "smollm3-3b-instruct",
+        "hf_id": "",
         "path": HF_CANDIDATE_ROOT / "HuggingFaceTB--SmolLM3-3B",
+        "notes": ["Larger chat/instruct candidate; keep bounded on 16GB-class GPUs."],
     },
     "gemma4-e2b": {
         "label": "Gemma 4 E2B",
         "size_b": 2.0,
         "family": "gemma4",
+        "target_type": "causal_lm",
         "runner_key": "gemma4-e2b",
+        "hf_id": "",
         "path": HF_CANDIDATE_ROOT / "google--gemma-4-E2B",
+        "notes": ["Small Gemma-family chat candidate when present locally."],
     },
 }
 
@@ -221,6 +333,19 @@ def infer_model_size_b(name: str) -> float:
     return 1.5
 
 
+def infer_target_type(name: str) -> str:
+    lower = name.lower()
+    if "t5" in lower or "umt5" in lower:
+        return "seq2seq_t5" if "efficient" in lower or "google--t5" in lower else "text_encoder"
+    if "clip" in lower:
+        return "clip_text"
+    if "blip" in lower:
+        return "blip_text"
+    if "smollm2" in lower or "pythia" in lower or "tiny" in lower:
+        return "prompt_helper_lm"
+    return "causal_lm"
+
+
 def discover_models() -> list[dict[str, Any]]:
     models: dict[str, dict[str, Any]] = {}
     for model_id, preset in MODEL_PRESETS.items():
@@ -230,10 +355,14 @@ def discover_models() -> list[dict[str, Any]]:
             "label": preset["label"],
             "path": str(path),
             "family": preset["family"],
+            "targetType": preset.get("target_type", "causal_lm"),
             "sizeB": preset["size_b"],
             "runnerKey": preset["runner_key"],
+            "hfId": preset.get("hf_id", ""),
             "exists": path.exists(),
             "source": "known-local",
+            "notes": preset.get("notes", []),
+            "executionBlocked": bool(preset.get("execution_blocked", False)),
         }
 
     for root in (RETRAIN_MODEL_ROOT, HF_CANDIDATE_ROOT):
@@ -250,10 +379,14 @@ def discover_models() -> list[dict[str, Any]]:
                     "label": child.name,
                     "path": str(child),
                     "family": "local",
+                    "targetType": infer_target_type(child.name),
                     "sizeB": infer_model_size_b(child.name),
                     "runnerKey": "",
+                    "hfId": "",
                     "exists": True,
                     "source": str(root),
+                    "notes": ["Discovered local model folder."],
+                    "executionBlocked": False,
                 },
             )
     return sorted(models.values(), key=lambda item: (not item["exists"], item["label"].lower()))
@@ -315,6 +448,8 @@ def default_config() -> dict[str, Any]:
         "datasetPath": default_dataset["path"],
         "modelId": default_model["id"],
         "modelPath": default_model["path"] if default_model["exists"] else "",
+        "targetType": default_model.get("targetType", "causal_lm"),
+        "datasetFormat": "auto",
         "method": "qlora",
         "precision": "4bit",
         "contextLength": 2048,
@@ -345,6 +480,8 @@ def normalize_config(payload: dict[str, Any] | None) -> dict[str, Any]:
         "datasetPath": str(raw.get("datasetPath") or ""),
         "modelId": str(raw.get("modelId") or ""),
         "modelPath": str(raw.get("modelPath") or ""),
+        "targetType": str(raw.get("targetType") or "causal_lm").lower(),
+        "datasetFormat": str(raw.get("datasetFormat") or "auto").lower(),
         "method": str(raw.get("method") or "qlora").lower(),
         "precision": str(raw.get("precision") or "4bit").lower(),
         "contextLength": _int(raw.get("contextLength"), 2048, 512, 32768),
@@ -369,6 +506,10 @@ def normalize_config(payload: dict[str, Any] | None) -> dict[str, Any]:
         normalized["method"] = "qlora"
     if normalized["precision"] not in {"4bit", "8bit", "bf16", "fp16"}:
         normalized["precision"] = "4bit"
+    if normalized["targetType"] not in SUPPORTED_TARGET_TYPES:
+        normalized["targetType"] = "causal_lm"
+    if normalized["datasetFormat"] not in DATASET_FORMATS:
+        normalized["datasetFormat"] = "auto"
     return normalized
 
 
@@ -436,15 +577,20 @@ def resolve_model(config: dict[str, Any]) -> dict[str, Any]:
         "label": path.name if config["modelPath"] else "Custom model",
         "path": str(path) if config["modelPath"] else "",
         "family": "custom",
+        "targetType": config.get("targetType") or infer_target_type(path.name if config["modelPath"] else ""),
         "sizeB": infer_model_size_b(path.name if config["modelPath"] else ""),
         "runnerKey": "",
+        "hfId": "",
         "exists": path.exists() if config["modelPath"] else False,
         "source": "custom",
+        "notes": ["Custom model path from request."],
+        "executionBlocked": False,
     }
 
 
 def estimate_vram(config: dict[str, Any], model: dict[str, Any]) -> dict[str, Any]:
     size_b = float(model.get("sizeB") or 1.5)
+    target_type = str(config.get("targetType") or model.get("targetType") or "causal_lm")
     precision_factor = {"4bit": 0.58, "8bit": 1.05, "bf16": 2.05, "fp16": 2.05}[config["precision"]]
     base_weights = size_b * precision_factor
     adapter = max(0.12, size_b * config["loraRank"] * 0.012) if config["method"] != "sft" else 0.0
@@ -461,6 +607,10 @@ def estimate_vram(config: dict[str, Any], model: dict[str, Any]) -> dict[str, An
     )
     dataloader = 0.45
     safety = 1.2 if config["maxVramGb"] <= 16 else 1.6
+    if target_type in {"seq2seq_t5", "text_encoder", "clip_text", "blip_text"}:
+        activations *= 0.72
+        adapter *= 0.82
+        safety = max(0.75, safety - 0.35)
     estimated = base_weights + adapter + optimizer + activations + dataloader + safety
     limit = min(config["maxVramGb"], config["freeVramGb"] + 1.2)
     headroom = limit - estimated
@@ -472,6 +622,8 @@ def estimate_vram(config: dict[str, Any], model: dict[str, Any]) -> dict[str, An
         warnings.append("Full precision 7B training is not a safe 16GB default.")
     if not config["gradientCheckpointing"] and config["maxVramGb"] <= 24:
         warnings.append("Gradient checkpointing is off; activation memory will be higher.")
+    if target_type not in RUNNER_READY_TARGETS:
+        warnings.append("This target is cataloged for lightweight planning; the current runner cannot execute it yet.")
     return {
         "fitState": fit_state,
         "estimatedGb": round(estimated, 2),
@@ -489,7 +641,7 @@ def estimate_vram(config: dict[str, Any], model: dict[str, Any]) -> dict[str, An
                 "detail": f"{config['contextLength']} ctx x {config['microBatchSize']} batch",
             },
             {"item": "Dataloader", "gb": round(dataloader, 2), "detail": "reserved"},
-            {"item": "Safety margin", "gb": round(safety, 2), "detail": "local profile"},
+            {"item": "Safety margin", "gb": round(safety, 2), "detail": f"{target_type} local profile"},
         ],
     }
 
@@ -498,7 +650,58 @@ def gate(name: str, ok: bool, detail: str, *, fail_state: str = "blocked") -> di
     return {"gate": name, "state": "ready" if ok else fail_state, "detail": detail}
 
 
+def target_detail(target_type: str) -> str:
+    return {
+        "causal_lm": "Runner-ready Causal LM chat/SFT target.",
+        "prompt_helper_lm": "Runner-ready small decoder LM target for prompt helper jobs.",
+        "seq2seq_t5": "Runner-ready lightweight Seq2Seq/T5 target.",
+        "text_encoder": "Runner-ready masked-LM text encoder target; AIWF component encoders may still be catalog-only.",
+        "clip_text": "Needs a CLIP text-side contrastive runner before execution.",
+        "blip_text": "Needs a BLIP/VLM text-side runner before execution.",
+    }.get(target_type, "Unknown training target.")
+
+
 def build_runner_argv(config: dict[str, Any], dataset: dict[str, Any], model: dict[str, Any], output_root: Path) -> list[str]:
+    target_type = str(config.get("targetType") or model.get("targetType") or "causal_lm")
+    if target_type in {"seq2seq_t5", "text_encoder"}:
+        model_path = Path(config["modelPath"] or model.get("path") or "").expanduser()
+        return [
+            sys.executable,
+            str(TEXT_TARGET_RUNNER_SCRIPT),
+            "--target-type",
+            target_type,
+            "--data-dir",
+            str(Path(dataset["path"])),
+            "--output-root",
+            str(output_root),
+            "--model-path",
+            str(model_path),
+            "--model-name",
+            safe_slug(model_path.name or str(model.get("id") or "text-target"), "text-target"),
+            "--dataset-format",
+            config["datasetFormat"],
+            "--max-seq-length",
+            str(config["contextLength"]),
+            "--batch-size",
+            str(config["microBatchSize"]),
+            "--gradient-accumulation-steps",
+            str(config["gradientAccumulationSteps"]),
+            "--learning-rate",
+            str(config["learningRate"]),
+            "--precision",
+            config["precision"] if config["precision"] in {"bf16", "fp16"} else "bf16",
+            "--max-steps",
+            str(config["maxSteps"] or 1),
+            "--max-train-records",
+            str(config["maxTrainRecords"]),
+            "--max-eval-records",
+            str(config["maxEvalRecords"]),
+            *(["--no-gradient-checkpointing"] if not config["gradientCheckpointing"] else []),
+            *(["--no-save-final"] if not config["saveFinal"] else []),
+            *(["--no-save-checkpoints"] if not config["saveCheckpoints"] else []),
+            *(["--dry-run"] if config["dryRun"] else []),
+        ]
+
     runner_method = METHOD_TO_RUNNER[config["method"]]
     precision = config["precision"] if config["precision"] in {"bf16", "fp16"} else "bf16"
     argv = [
@@ -557,18 +760,32 @@ def plan_training_run(payload: dict[str, Any] | None = None, *, run_id: str | No
     config = normalize_config(payload)
     dataset = resolve_dataset(config)
     model = resolve_model(config)
+    if config["modelId"] and model.get("id") != "custom":
+        config["targetType"] = str(model.get("targetType") or config["targetType"])
     estimate = estimate_vram(config, model)
     deps = dependency_status()
     output_root = RUN_OUTPUT_ROOT / (run_id or "planned")
     argv = build_runner_argv(config, dataset, model, output_root)
 
     gates = [
-        gate("Runner script", RUNNER_SCRIPT.exists(), str(RUNNER_SCRIPT)),
+        gate(
+            "Runner script",
+            (TEXT_TARGET_RUNNER_SCRIPT if config["targetType"] in {"seq2seq_t5", "text_encoder"} else RUNNER_SCRIPT).exists(),
+            str(TEXT_TARGET_RUNNER_SCRIPT if config["targetType"] in {"seq2seq_t5", "text_encoder"} else RUNNER_SCRIPT),
+        ),
         gate("Dataset splits", bool(dataset["runnerReady"]), dataset["path"]),
         gate("Output folder", output_root.parent.exists(), str(output_root.parent)),
+        gate(
+            "Training target",
+            config["targetType"] in RUNNER_READY_TARGETS and not bool(model.get("executionBlocked")),
+            target_detail(config["targetType"]),
+            fail_state="blocked",
+        ),
         gate("VRAM estimate", estimate["fitState"] != "unsafe", estimate["fitState"]),
         gate("Confirmation", config["dryRun"] or config["confirmed"], "required before write-heavy training"),
     ]
+    if model.get("executionBlocked"):
+        gates.append(gate("Model execution", False, "AIWF component encoder is catalog-only for this pass."))
     if config["modelPath"]:
         gates.append(
             gate(
@@ -628,6 +845,9 @@ def plan_training_run(payload: dict[str, Any] | None = None, *, run_id: str | No
         "notes": [
             "Dry runs validate paths and write receipts without loading model weights.",
             "Real training requires confirmation and uses the copied ReTrain runner.",
+            "Prompt-helper decoder LMs, T5/Seq2Seq, and generic masked-LM text encoders are runner-ready.",
+            "CLIP, BLIP, and large AIWF component encoders are cataloged until a matching paired-data runner is added.",
+            "Video and image model training are intentionally outside this ReTrain pass.",
             "MoK datasets are treated as external inputs; ReTrain remains the trainer repo.",
         ],
     }
