@@ -9,9 +9,18 @@ Local Windows-first training workbench for LLM/chat fine-tuning, LoRA, and QLoRA
 - Safe dry-run path that writes receipts without loading model weights
 - TensorBoard served from the same app and opened through the dashboard popup
 
+## Training Mode Roadmap
+
+- **Additive Adapter Growth:** planned frozen-core training mode where a stable 1.5B-class base model stays frozen while ReTrain trains LoRA, QLoRA, DoRA, adapter, or expert weights as modular add-ons.
+- **Target package shape:** `1.5B frozen base + trainable adapter/expert weights = expanded 1.6B-2B total model package`.
+- **Growth stages:** start with 16M, 64M, and 128M adapters before attempting 250M+ expert packs or experimental dense growth.
+- **Capability packs:** code, tool-use, routing, Atlas/card reasoning, style/personality, and safety/alignment adapters.
+
+See [`docs/training_modes/additive_adapter_growth.md`](docs/training_modes/additive_adapter_growth.md) for the detailed plan.
+
 ## Install
 
-Use the project installer. It creates `.\.venv`, installs the web app and CUDA
+Use the project installer. It creates `\.venv`, installs the web app and CUDA
 training stack, installs frontend dependencies, builds the dashboard, validates
 CUDA visibility, and runs smoke checks.
 
