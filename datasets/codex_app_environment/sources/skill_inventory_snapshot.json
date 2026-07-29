@@ -36,7 +36,7 @@
       "source_root": ".codex/plugins/cache"
     },
     {
-      "description": "AIWF Studio local open-source AI engine, pipeline, AI chat app, AI training, and product research routing skill. Use for work in or about F:\\AIWF_Studio involving image/video/audio generation engines, Diffusers pipelines, Wan, LTX, Qwen Image, Sana, Flux/Z-Image/Klein, AudioCraft, GGUF or safetensors model formats, Hugging Face downloads, Gradio UI wiring, React frontend work, product UX research, local LLM chat code, RAG/chat memory, LLM serving, fine-tuning/training, quantization, attention optimization, local venv/runtime setup, smoke tests, pipeline validation, GitHub-facing writing, or non-gitignored repo file edits. This skill selects the minimal relevant stock skills before acting, and routes GitHub/tracked-file writing through avoid-ai-writing.",
+      "description": "AIWF Studio local open-source AI engine, pipeline, AI chat app, AI training, and product research routing skill. Use for work in or about <AIWF_STUDIO_ROOT> involving image/video/audio generation engines, Diffusers pipelines, Wan, LTX, Qwen Image, Sana, Flux/Z-Image/Klein, AudioCraft, GGUF or safetensors model formats, Hugging Face downloads, Gradio UI wiring, React frontend work, product UX research, local LLM chat code, RAG/chat memory, LLM serving, fine-tuning/training, quantization, attention optimization, local venv/runtime setup, smoke tests, pipeline validation, GitHub-facing writing, or non-gitignored repo file edits. This skill selects the minimal relevant stock skills before acting, and routes GitHub/tracked-file writing through avoid-ai-writing.",
       "name": "aiwf",
       "path": ".codex/skills/aiwf/SKILL.md",
       "source_root": ".codex/skills"
@@ -1038,7 +1038,7 @@
       "source_root": ".codex/skills"
     },
     {
-      "description": "Shared SDK/runtime cache routing skill for work explicitly in or about F:\\sdks, NVIDIA SDKs, Python wheelhouses, CUDA/PyTorch wheels, TensorRT-RTX, TensorRT-LLM, ONNX Runtime, OpenVINO, FAISS, llama-recipes, junctions, Windows SDK path cleanup, or cross-project SDK reuse for AIWF Studio, MoK, ATLAS, or RV1. Do not use for generic package advice unless the prompt names the shared cache, NVIDIA/runtime setup, or a concrete local SDK path.",
+      "description": "Shared SDK/runtime cache routing skill for work explicitly in or about <SDK_CACHE_ROOT>, NVIDIA SDKs, Python wheelhouses, CUDA/PyTorch wheels, TensorRT-RTX, TensorRT-LLM, ONNX Runtime, OpenVINO, FAISS, llama-recipes, junctions, Windows SDK path cleanup, or cross-project SDK reuse for AIWF Studio, MoK, ATLAS, or RV1. Do not use for generic package advice unless the prompt names the shared cache, NVIDIA/runtime setup, or a concrete local SDK path.",
       "name": "sdk-cache",
       "path": ".codex/skills/sdk-cache/SKILL.md",
       "source_root": ".codex/skills"

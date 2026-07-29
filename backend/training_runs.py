@@ -15,13 +15,21 @@ from typing import Any, Final
 
 
 ROOT_DIR: Final = Path(__file__).resolve().parents[1]
-MOK_ROOT: Final = Path(r"C:\Users\Shawn\Desktop\MoK-Project")
 RUNNER_SCRIPT: Final = ROOT_DIR / "scripts" / "run_posttrain_bakeoff.py"
 TEXT_TARGET_RUNNER_SCRIPT: Final = ROOT_DIR / "scripts" / "run_text_target_training.py"
 RUN_STATE_ROOT: Final = ROOT_DIR / "training" / "run_state"
 RUN_OUTPUT_ROOT: Final = ROOT_DIR / "training" / "runs"
 RETRAIN_MODEL_ROOT: Final = ROOT_DIR / "models"
-HF_CANDIDATE_ROOT: Final = Path(r"F:\Ai_Models\hf\posttrain_candidates")
+
+
+def configured_path(env_name: str, default: Path) -> Path:
+    """Resolve an optional local path without publishing a workstation layout."""
+    configured = os.environ.get(env_name, "").strip()
+    return Path(configured).expanduser() if configured else default
+
+
+MOK_ROOT: Final = configured_path("RETRAIN_MOK_ROOT", ROOT_DIR / "external" / "MoK-Project")
+HF_CANDIDATE_ROOT: Final = configured_path("RETRAIN_MODEL_CANDIDATES_ROOT", RETRAIN_MODEL_ROOT / "candidates")
 ANSI_RE: Final = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 METHOD_TO_RUNNER: Final = {
@@ -119,7 +127,7 @@ MODEL_PRESETS: Final = {
         "target_type": "text_encoder",
         "runner_key": "",
         "hf_id": "",
-        "path": Path(r"F:\AIWF_Studio\models\wan\Wan2.2-TI2V-5B-Diffusers\text_encoder"),
+        "path": RETRAIN_MODEL_ROOT / "catalog" / "wan-umt5-text-encoder",
         "notes": ["AIWF Wan uses UMT5-specific text encoders; do not substitute generic Flux or SD3 T5 files."],
         "execution_blocked": True,
     },
@@ -130,7 +138,7 @@ MODEL_PRESETS: Final = {
         "target_type": "text_encoder",
         "runner_key": "",
         "hf_id": "google/gemma-3-12b-it-qat-q4_0-unquantized",
-        "path": Path(r"F:\AIWF_Studio\models\ltx\text_encoder\gemma-3-12b-it-qat-q4_0-unquantized"),
+        "path": RETRAIN_MODEL_ROOT / "catalog" / "ltx-gemma-text-encoder",
         "notes": ["AIWF LTX needs Gemma hidden states; this is cataloged for compatibility, not a light default."],
         "execution_blocked": True,
     },

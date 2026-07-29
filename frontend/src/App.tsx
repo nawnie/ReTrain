@@ -194,24 +194,19 @@ const numberFields: Array<keyof TrainingConfig> = [
 
 function scrubLocalPaths(value: string) {
   return value
-    .replace(/C:\\Users\\[^\\]+\\Desktop\\Rnv1-ReTrain\\/g, "Rnv1-ReTrain\\")
-    .replace(/C:\\Users\\[^\\]+\\Desktop\\MoK-Project\\/g, "MoK-Project\\")
-    .replace(/C:\\Users\\[^\\]+\\/g, "%USERPROFILE%\\")
-    .replace(/F:\\Ai_Models\\hf\\posttrain_candidates\\/g, "HF candidates\\")
-    .replace(/F:\\datasets\\/g, "datasets\\")
-    .replace(/Rnv1-ReTrain\\\.venv\\Scripts\\python\.exe/g, "python")
-    .replace(/Rnv1-ReTrain\\scripts\\run_posttrain_bakeoff\.py/g, "scripts\\run_posttrain_bakeoff.py")
+    .replace(/ReTrain\\\.venv\\Scripts\\python\.exe/g, "python")
+    .replace(/ReTrain\\scripts\\run_posttrain_bakeoff\.py/g, "scripts\\run_posttrain_bakeoff.py")
     .replace(/MoK-Project\\training\\posttrain_bakeoff\\data/g, "MoK-Project\\...\\posttrain_bakeoff\\data")
     .replace(/MoK-Project\\training\\core_mok\\splits/g, "MoK-Project\\...\\core_mok\\splits")
-    .replace(/Rnv1-ReTrain\\training\\runs\\([^\s"]+)/g, "Rnv1-ReTrain\\...\\$1")
-    .replace(/Rnv1-ReTrain\\training\\run_state\\([^\s"]+)/g, "Rnv1-ReTrain\\...\\$1");
+    .replace(/ReTrain\\training\\runs\\([^\s"]+)/g, "ReTrain\\...\\$1")
+    .replace(/ReTrain\\training\\run_state\\([^\s"]+)/g, "ReTrain\\...\\$1");
 }
 
 function compactPath(value?: string) {
   if (!value) return "-";
   const scrubbed = scrubLocalPaths(value);
   const parts = scrubbed.split(/[\\/]+/).filter(Boolean);
-  if ((parts[0] === "Rnv1-ReTrain" || parts[0] === "MoK-Project") && parts.includes("training")) {
+  if ((parts[0] === "ReTrain" || parts[0] === "MoK-Project") && parts.includes("training")) {
     return `${parts[0]}\\...\\${parts[parts.length - 1]}`;
   }
   if (parts.length <= 3) return scrubbed;
@@ -466,7 +461,7 @@ export function App() {
         <div className="brandLockup">
           <img src={retrainIconUrl} alt="" className="appIcon" />
           <div>
-            <p className="eyebrow">Rnv1 ReTrain</p>
+            <p className="eyebrow">ReTrain</p>
             <h1>Lab Console</h1>
             <p className="lede">Local training workbench for small chat models, prompt helpers, T5 variants, and text encoders.</p>
           </div>

@@ -1,1 +1,1 @@
-"""Rnv1 ReTrain dashboard backend."""
+"""ReTrain dashboard backend."""

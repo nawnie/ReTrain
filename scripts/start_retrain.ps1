@@ -28,7 +28,7 @@ try {
         Write-Error "ReTrain .venv is missing app or training dependencies. Run: .\scripts\install_retrain.ps1"
     }
 
-    Write-Host "Starting Rnv1 ReTrain at http://$HostAddress`:$Port"
+    Write-Host "Starting ReTrain at http://$HostAddress`:$Port"
     $ErrorActionPreference = "Continue"
     & $Python -m uvicorn backend.main:app --host $HostAddress --port $Port
 }

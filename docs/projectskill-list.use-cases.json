@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "project": "Rnv1-ReTrain",
+  "project": "ReTrain",
   "generated_on": "2026-06-29",
   "routing_policy": {
     "standing_rule": "Evaluate implicit skill triggers on every non-trivial task before editing files or running long commands.",

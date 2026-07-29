@@ -19,19 +19,22 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA_DIR = ROOT / "training" / "posttrain_smoke" / "data"
 DEFAULT_OUTPUT_ROOT = ROOT / "training" / "runs"
+MODEL_CANDIDATE_ROOT = Path(
+    os.environ.get("RETRAIN_MODEL_CANDIDATES_ROOT", str(ROOT / "models" / "candidates"))
+).expanduser()
 DEFAULT_MODELS = {
     "qwen2.5-coder-1.5b": {
-        "path": Path(r"F:\Ai_Models\hf\posttrain_candidates\Qwen--Qwen2.5-Coder-1.5B"),
+        "path": MODEL_CANDIDATE_ROOT / "Qwen--Qwen2.5-Coder-1.5B",
         "family": "qwen-coder",
         "fit_note": "Safest full-SFT and LoRA starter on this 16GB-class local GPU.",
     },
     "smollm3-3b-instruct": {
-        "path": Path(r"F:\Ai_Models\hf\posttrain_candidates\HuggingFaceTB--SmolLM3-3B"),
+        "path": MODEL_CANDIDATE_ROOT / "HuggingFaceTB--SmolLM3-3B",
         "family": "smollm3",
         "fit_note": "3B instruct model with dual-mode reasoning behavior; full-SFT smoke may fit only with short context.",
     },
     "gemma4-e2b": {
-        "path": Path(r"F:\Ai_Models\hf\posttrain_candidates\google--gemma-4-E2B"),
+        "path": MODEL_CANDIDATE_ROOT / "google--gemma-4-E2B",
         "family": "gemma4",
         "fit_note": "Gemma 4 E2B base weights fit on disk, but full-weight SFT is expected to be tight on 16GB VRAM.",
     },

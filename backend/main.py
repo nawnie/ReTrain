@@ -24,9 +24,7 @@ DEFAULT_LOGDIR: Final = training_runs.RUN_OUTPUT_ROOT
 CODEX_APP_DATASET_DIR: Final = ROOT_DIR / "datasets" / "codex_app_environment"
 CODEX_APP_MANIFEST: Final = CODEX_APP_DATASET_DIR / "manifest.json"
 TENSORBOARD_HOST: Final = "127.0.0.1"
-TENSORBOARD_PORT: Final = int(
-    os.environ.get("RNV1_TENSORBOARD_PORT", os.environ.get("MOK_TENSORBOARD_PORT", "6006"))
-)
+TENSORBOARD_PORT: Final = int(os.environ.get("RETRAIN_TENSORBOARD_PORT", "6006"))
 TENSORBOARD_BASE: Final = f"http://{TENSORBOARD_HOST}:{TENSORBOARD_PORT}"
 TENSORBOARD_WARNING_FILTER: Final = """<script>
 (() => {
@@ -41,7 +39,7 @@ TENSORBOARD_WARNING_FILTER: Final = """<script>
 </script>"""
 TENSORBOARD_THREE_WARNING: Final = "WARNING: Multiple instances of Three.js being imported."
 
-app = FastAPI(title="Rnv1 ReTrain Dashboard", version="0.2.0")
+app = FastAPI(title="ReTrain Dashboard", version="0.2.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://127.0.0.1:5173", "http://localhost:5173"],
@@ -114,7 +112,7 @@ def _filter_tensorboard_noise(content: bytes, content_type: str | None) -> bytes
         return content
     if TENSORBOARD_THREE_WARNING in text:
         return content
-    text = text.replace("?_file_hash=", "?rnv1_proxy=1&_file_hash=")
+    text = text.replace("?_file_hash=", "?retrain_proxy=1&_file_hash=")
     if "<head>" in text:
         text = text.replace("<head>", f"<head>{TENSORBOARD_WARNING_FILTER}", 1)
     elif "<html>" in text:
@@ -167,7 +165,7 @@ def shutdown_tensorboard() -> None:
 async def health() -> dict[str, object]:
     return {
         "ok": True,
-        "service": "rnv1-retrain-dashboard",
+        "service": "retrain-dashboard",
         "tensorboard": {
             "embeddedPath": "/tensorboard/",
             "logdir": str(DEFAULT_LOGDIR),

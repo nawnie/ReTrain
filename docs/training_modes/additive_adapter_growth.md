@@ -13,12 +13,23 @@ Additive Adapter Growth keeps the base model frozen and trains additional adapte
 
 This is not full dense model expansion. The base architecture remains stable while ReTrain produces modular add-ons that can be saved, swapped, stacked, routed, or merged later.
 
-## First Supported Path
+## Current implementation boundary
 
-- Load a 1.5B-class base model as the stable frozen core.
-- Use LoRA, QLoRA, DoRA, or compatible adapter modules.
-- Save trained adapter artifacts separately from the base model.
-- Prefer quantized base loading when useful for 16 GB VRAM systems.
+- The causal-LM runner implements full SFT, LoRA, and QLoRA.
+- LoRA and QLoRA can produce separate adapter artifacts; full SFT writes a
+  fine-tuned model output.
+- The text-side runner currently performs full Seq2Seq or masked-LM tuning; it
+  does not implement adapter tuning for those target types.
+- DoRA, adapter stacking/routing, expert packs, and dense growth are planned,
+  not executable modes in this checkout.
+
+## Proposed additive path
+
+- Load a 1.5B-class base model as a stable frozen core.
+- Start with the existing LoRA or QLoRA path and save adapter artifacts
+  separately from base weights.
+- Add DoRA or another adapter family only after its configuration, save/load
+  contract, tests, and bounded run evidence are present.
 - Keep full dense architecture growth behind an experimental gate.
 
 ## Adapter Growth Stages

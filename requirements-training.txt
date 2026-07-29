@@ -1,5 +1,5 @@
-# ReTrain-owned CUDA training stack. These pins match the local working
-# post-training environment and the wheelhouse under F:\sdks\python-wheelhouse.
+# ReTrain-owned CUDA training stack. These pins match the validated
+# post-training environment; optional wheelhouses are configured at install time.
 torch==2.11.0+cu128
 transformers==5.12.1
 accelerate==1.14.0

@@ -1,4 +1,4 @@
-# Rnv1-ReTrain agent instructions
+# ReTrain agent instructions
 
 Start by reading `HANDOFF.md`. It has the current state of the ReTrain move,
 the dashboard work in progress, and the verification steps that still need to

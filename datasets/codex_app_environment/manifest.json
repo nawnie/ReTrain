@@ -2,7 +2,7 @@
   "name": "codex_app_environment",
   "version": "0.1.0",
   "generated_on": "2026-06-28",
-  "owner": "Rnv1-ReTrain",
+  "owner": "ReTrain",
   "summary": "Training and eval data for teaching a local model how to operate inside Codex with skills, plugins, MCP tools, app connectors, local shell tools, browser tools, and project instructions.",
   "files": {
     "source_guide": "sources/codex_app_environment.md",

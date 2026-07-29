@@ -1,4 +1,4 @@
-# Rnv1-ReTrain Skill Routing
+# ReTrain Skill Routing
 
 Standing rule: on every non-trivial task, evaluate implicit skill triggers before editing files or running long commands.
 

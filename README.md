@@ -1,33 +1,71 @@
-# Rnv1 ReTrain
+# ReTrain
 
-Local Windows-first training workbench for LLM/chat fine-tuning, LoRA, and QLoRA experiments. ReTrain is standalone: it can use MoK datasets as external inputs, but it is not wired into MoK or AIWF Studio.
+ReTrain is an approachable, Windows-first local training workbench. It helps a
+person inspect local datasets and model folders, plan a bounded run, check
+readiness and estimated VRAM, run a dry check, and keep receipts, logs, and
+TensorBoard summaries together. It is not merely a generic dashboard.
 
-## MVP Surface
+ReTrain is standalone. It can use an explicitly configured MoK dataset as an
+external input, but it does not merge MoK or AIWF Studio into this repository.
 
-- FastAPI backend serving the React dashboard at `http://127.0.0.1:8000`
-- User-friendly training-run dashboard with dataset/model selection, readiness gates, VRAM estimate, run history, artifacts, logs, and scalar summaries
-- Safe dry-run path that writes receipts without loading model weights
-- TensorBoard served from the same app and opened through the dashboard popup
+## What runs today
 
-## Training Mode Roadmap
+The current execution surface is deliberately narrower than the product
+roadmap:
 
-- **Additive Adapter Growth:** planned frozen-core training mode where a stable 1.5B-class base model stays frozen while ReTrain trains LoRA, QLoRA, DoRA, adapter, or expert weights as modular add-ons.
-- **Target package shape:** `1.5B frozen base + trainable adapter/expert weights = expanded 1.6B-2B total model package`.
-- **Growth stages:** start with 16M, 64M, and 128M adapters before attempting 250M+ expert packs or experimental dense growth.
-- **Capability packs:** code, tool-use, routing, Atlas/card reasoning, style/personality, and safety/alignment adapters.
+- Causal and prompt-helper decoder LMs: Transformers `Trainer` full SFT, LoRA,
+  and QLoRA through `scripts/run_posttrain_bakeoff.py`.
+- Seq2Seq/T5 targets: full fine-tuning through
+  `scripts/run_text_target_training.py`.
+- Generic masked-LM text encoders: full fine-tuning through the same text-side
+  runner.
+- Planning only: CLIP text, BLIP text, and listed component encoders remain
+  blocked until a matching paired-data runner exists.
 
-See [`docs/training_modes/additive_adapter_growth.md`](docs/training_modes/additive_adapter_growth.md) for the detailed plan.
+DoRA, adapter stacking/routing, expert packs, and dense model growth are not
+implemented execution modes yet. They are documented research directions, not
+current capabilities.
+
+## Additive adapter growth
+
+ReTrain's near-term research direction is a frozen-core base model with modular
+LoRA or QLoRA capability packs. The working engine can save LoRA/QLoRA output;
+the future adapter/expert packaging, routing, stacking, and DoRA path still
+need implementation and measured evaluation.
+
+See [the additive-adapter notes](docs/training_modes/additive_adapter_growth.md).
+
+## Repository map
+
+See [docs/REPOSITORY_MAP.md](docs/REPOSITORY_MAP.md) for the code, data,
+runtime-state, and documentation boundaries. Release changes are recorded in
+[CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
-Use the project installer. It creates `\.venv`, installs the web app and CUDA
-training stack, installs frontend dependencies, builds the dashboard, validates
-CUDA visibility, and runs smoke checks.
+From the repository root:
 
 ```powershell
-cd C:\Users\Shawn\Desktop\Rnv1-ReTrain
 .\scripts\install_retrain.ps1
 ```
+
+The installer creates a project-owned `.venv`, installs the app and training
+dependencies, builds the frontend, validates CUDA visibility by default, and
+runs static/dataset checks. It does not download model weights.
+
+Optional local configuration is via environment variables, never hard-coded
+workstation paths:
+
+| Variable | Purpose |
+| --- | --- |
+| `RETRAIN_MODEL_CANDIDATES_ROOT` | Folder containing already-downloaded local base models. Defaults to `models/candidates`. |
+| `RETRAIN_MOK_ROOT` | Optional external MoK checkout used only for dataset discovery. |
+| `RETRAIN_TORCH_WHEELHOUSE` | Optional local PyTorch wheelhouse. |
+| `RETRAIN_TRAINING_WHEELHOUSE` | Optional local training-dependency wheelhouse. |
+| `RETRAIN_SMOKE_MODEL_PATH` + `RETRAIN_SMOKE_DATA_DIR` | Optional pair enabling the installer’s local-model dry run. |
+
+Use `-Offline` only when one or both configured wheelhouses contain everything
+required by the requirements files.
 
 ## Launch
 
@@ -35,48 +73,23 @@ cd C:\Users\Shawn\Desktop\Rnv1-ReTrain
 .\scripts\start_retrain.ps1
 ```
 
-Then open:
+Then open `http://127.0.0.1:8000`.
 
-```text
-http://127.0.0.1:8000
-```
-
-The startup script expects `frontend\dist\index.html` and `.\.venv` to exist.
-If either is missing, run `.\scripts\install_retrain.ps1`. It will not silently
-fall back to another project venv or global Python.
-
-## Smoke Checks
+## Safe smoke checks
 
 ```powershell
-py -3.10 -m compileall backend scripts
+.\.venv\Scripts\python.exe -m compileall backend scripts
 .\.venv\Scripts\python.exe datasets\codex_app_environment\scripts\validate_codex_app_dataset.py
-cd frontend
-npm run build
-cd ..
+Push-Location frontend; npm run build; Pop-Location
 ```
 
-With the app running:
-
-```powershell
-Invoke-RestMethod http://127.0.0.1:8000/api/health
-Invoke-RestMethod http://127.0.0.1:8000/api/training/overview
-Invoke-RestMethod http://127.0.0.1:8000/api/training/runs/plan -Method Post -ContentType 'application/json' -Body '{}'
-Invoke-RestMethod http://127.0.0.1:8000/api/training/runs -Method Post -ContentType 'application/json' -Body '{"execute":true,"dryRun":true}'
-Invoke-RestMethod http://127.0.0.1:8000/api/tensorboard/start -Method Post
-Invoke-WebRequest http://127.0.0.1:8000/tensorboard/ -UseBasicParsing
-```
-
-Browser check:
-
-- Dashboard loads at `/`
-- `Plan` refreshes readiness
-- `Run Dry Check` writes a `dry_run_completed` receipt
-- `Start TensorBoard` reports ready
-- `Open TensorBoard` opens the embedded TensorBoard modal
+With the app running, planning and `dryRun: true` execution create receipts
+without loading model weights. Real training requires `confirmed: true` and
+`dryRun: false`.
 
 ## Guardrails
 
-- Do not download large models or run real VRAM-heavy training unless Shawn explicitly asks.
-- Real training requires `confirmed: true` and `dryRun: false`.
-- Keep runtime state and weights out of git: `training\run_state`, `training\runs`, `models`, logs, and weight files are ignored.
-- Keep modality expansion out of this MVP. Image, video, audio, cloud, auth, and hosted release work are not part of this baseline.
+- Do not download large models or run VRAM-heavy training unless explicitly requested.
+- Do not commit weights, private datasets, run state, logs, environment files, or generated frontend output.
+- TensorBoard is loopback-only through the local app; this repository does not configure hosted service, auth, or cloud release flows.
+- Treat planned training modes as planned until they have a matching runner and measured evidence.

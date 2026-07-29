@@ -11,8 +11,8 @@ $VenvDir = Join-Path $Root ".venv"
 $Python = Join-Path $VenvDir "Scripts\python.exe"
 $Requirements = Join-Path $Root "requirements.txt"
 $TrainingRequirements = Join-Path $Root "requirements-training.txt"
-$TorchWheelhouse = "F:\sdks\python-wheelhouse\pytorch-cu128"
-$TrainingWheelhouse = "F:\sdks\python-wheelhouse\mok-training"
+$SmokeModelPath = $env:RETRAIN_SMOKE_MODEL_PATH
+$SmokeDataDir = $env:RETRAIN_SMOKE_DATA_DIR
 
 function Invoke-Step {
     param(
@@ -51,7 +51,7 @@ if (-not (Test-Path -LiteralPath $Python)) {
 }
 
 $FindLinks = @()
-foreach ($path in @($TorchWheelhouse, $TrainingWheelhouse)) {
+foreach ($path in @($env:RETRAIN_TORCH_WHEELHOUSE, $env:RETRAIN_TRAINING_WHEELHOUSE)) {
     if (Test-Path -LiteralPath $path) {
         $FindLinks += @("--find-links", $path)
     }
@@ -150,7 +150,15 @@ Invoke-Step "Running ReTrain smoke checks" {
     try {
         & $Python -m compileall backend scripts
         & $Python datasets\codex_app_environment\scripts\validate_codex_app_dataset.py
-        & $Python scripts\run_posttrain_bakeoff.py --dry-run --model qwen2.5-coder-1.5b --data-dir C:\Users\Shawn\Desktop\MoK-Project\training\posttrain_bakeoff\data --output-root training\runs\installer-smoke
+        if ($SmokeModelPath -or $SmokeDataDir) {
+            if (-not $SmokeModelPath -or -not $SmokeDataDir) {
+                Write-Error "Set both RETRAIN_SMOKE_MODEL_PATH and RETRAIN_SMOKE_DATA_DIR for the optional local-model dry run."
+            }
+            & $Python scripts\run_posttrain_bakeoff.py --dry-run --model-path $SmokeModelPath --model-name local-smoke --data-dir $SmokeDataDir --output-root training\runs\installer-smoke
+        }
+        else {
+            Write-Host "Skipping optional local-model dry run. Set RETRAIN_SMOKE_MODEL_PATH and RETRAIN_SMOKE_DATA_DIR to enable it."
+        }
     }
     finally {
         Pop-Location
