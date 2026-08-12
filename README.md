@@ -1,95 +1,47 @@
 # ReTrain
 
-ReTrain is an approachable, Windows-first local training workbench. It helps a
-person inspect local datasets and model folders, plan a bounded run, check
-readiness and estimated VRAM, run a dry check, and keep receipts, logs, and
-TensorBoard summaries together. It is not merely a generic dashboard.
+ReTrain is a Windows-first local training workbench for people who want to fine-tune models on the hardware they actually own.
 
-ReTrain is standalone. It can use an explicitly configured MoK dataset as an
-external input, but it does not merge MoK or AIWF Studio into this repository.
+It turns a complicated run into a sequence that a person can inspect:
 
-## What runs today
+~~~
+choose a model
+  -> inspect data
+  -> check readiness and VRAM
+  -> preview the run
+  -> train
+  -> keep receipts, logs, and results together
+~~~
 
-The current execution surface is deliberately narrower than the product
-roadmap:
+## Why it exists
 
-- Causal and prompt-helper decoder LMs: Transformers `Trainer` full SFT, LoRA,
-  and QLoRA through `scripts/run_posttrain_bakeoff.py`.
-- Seq2Seq/T5 targets: full fine-tuning through
-  `scripts/run_text_target_training.py`.
-- Generic masked-LM text encoders: full fine-tuning through the same text-side
-  runner.
-- Planning only: CLIP text, BLIP text, and listed component encoders remain
-  blocked until a matching paired-data runner exists.
+Training tools often assume a clean Linux server, a large budget, and a researcher who already knows which knob matters. ReTrain starts with a real workstation, local model folders, a finite GPU, and a need to know what happened after the button was pressed.
 
-DoRA, adapter stacking/routing, expert packs, and dense model growth are not
-implemented execution modes yet. They are documented research directions, not
-current capabilities.
+## What works today
 
-## Additive adapter growth
+- full SFT, LoRA, and QLoRA for supported decoder language-model paths;
+- supported Seq2Seq and masked-language-model training;
+- model-folder and dataset inspection;
+- readiness and estimated-VRAM checks;
+- dry-run planning before weights are loaded;
+- local logs, receipts, and TensorBoard summaries.
 
-ReTrain's near-term research direction is a frozen-core base model with modular
-LoRA or QLoRA capability packs. The working engine can save LoRA/QLoRA output;
-the future adapter/expert packaging, routing, stacking, and DoRA path still
-need implementation and measured evaluation.
+Future modes are documented as future modes. This repo does not present a roadmap as a working button.
 
-See [the additive-adapter notes](docs/training_modes/additive_adapter_growth.md).
+## Quick start
 
-## Repository map
-
-See [docs/REPOSITORY_MAP.md](docs/REPOSITORY_MAP.md) for the code, data,
-runtime-state, and documentation boundaries. Release changes are recorded in
-[CHANGELOG.md](CHANGELOG.md).
-
-## Install
-
-From the repository root:
-
-```powershell
+~~~powershell
 .\scripts\install_retrain.ps1
-```
-
-The installer creates a project-owned `.venv`, installs the app and training
-dependencies, builds the frontend, validates CUDA visibility by default, and
-runs static/dataset checks. It does not download model weights.
-
-Optional local configuration is via environment variables, never hard-coded
-workstation paths:
-
-| Variable | Purpose |
-| --- | --- |
-| `RETRAIN_MODEL_CANDIDATES_ROOT` | Folder containing already-downloaded local base models. Defaults to `models/candidates`. |
-| `RETRAIN_MOK_ROOT` | Optional external MoK checkout used only for dataset discovery. |
-| `RETRAIN_TORCH_WHEELHOUSE` | Optional local PyTorch wheelhouse. |
-| `RETRAIN_TRAINING_WHEELHOUSE` | Optional local training-dependency wheelhouse. |
-| `RETRAIN_SMOKE_MODEL_PATH` + `RETRAIN_SMOKE_DATA_DIR` | Optional pair enabling the installer’s local-model dry run. |
-
-Use `-Offline` only when one or both configured wheelhouses contain everything
-required by the requirements files.
-
-## Launch
-
-```powershell
 .\scripts\start_retrain.ps1
-```
+~~~
 
-Then open `http://127.0.0.1:8000`.
+Then open http://127.0.0.1:8000.
 
-## Safe smoke checks
+## Part of a larger practical stack
 
-```powershell
-.\.venv\Scripts\python.exe -m compileall backend scripts
-.\.venv\Scripts\python.exe datasets\codex_app_environment\scripts\validate_codex_app_dataset.py
-Push-Location frontend; npm run build; Pop-Location
-```
+- [AIWF Studio](https://github.com/nawnie/AIWF-Studio) — local creative AI.
+- [Model Operating Kernel](https://github.com/nawnie/Model-Operating-Kernel) — runtime coordination.
+- [Cartographer SDK](https://github.com/nawnie/atlas-core) — supporting context and lineage infrastructure.
+- [RNV1](https://github.com/nawnie/Rnv1) — long-term local and embodied AI.
 
-With the app running, planning and `dryRun: true` execution create receipts
-without loading model weights. Real training requires `confirmed: true` and
-`dryRun: false`.
-
-## Guardrails
-
-- Do not download large models or run VRAM-heavy training unless explicitly requested.
-- Do not commit weights, private datasets, run state, logs, environment files, or generated frontend output.
-- TensorBoard is loopback-only through the local app; this repository does not configure hosted service, auth, or cloud release flows.
-- Treat planned training modes as planned until they have a matching runner and measured evidence.
+ReTrain is public proof of the training side of AI Embedded Systems. The receipts are part of the product: if a run cannot be explained afterward, it was not finished.
