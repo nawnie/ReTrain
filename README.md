@@ -41,7 +41,7 @@ Then open http://127.0.0.1:8000.
 
 - [AIWF Studio](https://github.com/nawnie/AIWF-Studio) — local creative AI.
 - [Model Operating Kernel](https://github.com/nawnie/Model-Operating-Kernel) — runtime coordination.
-- [Cartographer SDK](https://github.com/nawnie/atlas-core) — supporting context and lineage infrastructure.
+- [Atlas Core](https://github.com/nawnie/atlas-core) — provenance, canonical state, approval, and recovery infrastructure.
 - [RNV1](https://github.com/nawnie/Rnv1) — long-term local and embodied AI.
 
 ReTrain is public proof of the training side of AI Embedded Systems. The receipts are part of the product: if a run cannot be explained afterward, it was not finished.
