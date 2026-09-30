@@ -1,0 +1,1263 @@
+/* ===========================================================================
+   ReTrain component styles.
+
+   Every color here is a var() from theme.css. Every edge is a step on the
+   spacing scale. Every layout track is expressed in rem, fr, or minmax, never
+   a fixed pixel width, because a fixed dimension asserts we know the reader's
+   window and their font size, and we know neither.
+
+   Read alongside app.css section headers: the file is ordered the way the
+   screen is, from the outer shell inwards.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. Reset and document
+   Only what this app actually relies on. The page itself never scrolls; the
+   shell owns the viewport and the panes inside it scroll. That is a deliberate
+   desktop-console layout, and it is only safe because every pane below is an
+   explicit scroll container -- see section 3.
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font: var(--text-body) / 1.5 var(--font-ui);
+  color: var(--ink);
+  background: var(--bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* One focus treatment for the whole app, on the accent so it reads as
+   "interactive" rather than as a status. Never removed, only styled. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 0.125rem solid var(--accent);
+  outline-offset: 0.125rem;
+  border-radius: var(--radius-control);
+}
+
+::selection {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+
+/* The scrollbar is chrome, and chrome is part of the theme. Left unstyled it
+   inherits whatever the token layer forgot. */
+* {
+  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-width: thin;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Application shell
+   Three rows: header, work area, launch bar. The work area is the only row
+   that flexes, and minmax(0, 1fr) lets it shrink below its content so the
+   pane inside can scroll instead of pushing the launch bar off screen.
+
+   This is the whole reason the launch controls can never become unreachable:
+   they are a shell row, not page content.
+   --------------------------------------------------------------------------- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  height: 100dvh;
+  background: var(--bg);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+
+  /* Matches titleBarOverlay height in the desktop shell, so the native caption
+     buttons line up with this bar rather than floating above it. */
+  min-height: 3rem;
+
+  /* In the desktop shell the header is the window's drag handle, and the OS
+     reserves the top-right corner for the caption buttons. `titlebar-area-width`
+     is the width left over for the app, so the difference is exactly the space
+     the buttons occupy. In a browser the env() values are absent and the
+     fallbacks collapse this to the normal padding. */
+  padding-right: calc(
+    100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + var(--space-5)
+  );
+  -webkit-app-region: drag;
+}
+
+/* Everything the operator can actually click has to opt back out of dragging,
+   or it becomes a window handle instead of a control. */
+.app-header button,
+.app-header select,
+.app-header input,
+.app-header a {
+  -webkit-app-region: no-drag;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.brand-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand-note {
+  color: var(--ink-faint);
+  font-size: var(--text-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------------------
+   3. Work area and panes
+   Exactly one pane is mounted at a time. Each is its own scroll container, so
+   long content scrolls inside the work area while the header and launch bar
+   stay put.
+   --------------------------------------------------------------------------- */
+
+.app-main {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.pane {
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+.pane-inner {
+  max-width: 82rem;
+  margin: 0 auto;
+}
+
+/* Tab strip. Three destinations, because configuring a run, reviewing past
+   runs, and inspecting the machine are genuinely different tasks. */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.tab {
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-bottom: 0.125rem solid transparent;
+  background: none;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.tab-count {
+  margin-left: var(--space-2);
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+}
+
+/* ---------------------------------------------------------------------------
+   4. Panels
+   The one repeated container. Flat by default: a panel is a grouping device,
+   not a floating card, so it gets a rule and a surface rather than a shadow.
+   --------------------------------------------------------------------------- */
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  min-width: 0;
+}
+
+.panel + .panel {
+  margin-top: var(--space-4);
+}
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-4) var(--space-4) 0;
+}
+
+.panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.panel-note {
+  margin: var(--space-1) 0 0;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+}
+
+.panel-body {
+  padding: var(--space-4);
+}
+
+/* ---------------------------------------------------------------------------
+   5. Configure pane
+   Two columns: the controls, and the consequence of those controls. They sit
+   side by side deliberately -- a setting and its cost belong on one screen,
+   because splitting them hides the consequence from the decision.
+   --------------------------------------------------------------------------- */
+
+.configure {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 24rem);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* The projection column tracks the reader down the form, so the VRAM figure
+   is still on screen while they change the setting that moves it. */
+.projection-column {
+  position: sticky;
+  top: 0;
+  min-width: 0;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  gap: var(--space-4);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.field-label {
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.field-hint {
+  color: var(--ink-faint);
+  font-size: var(--text-micro);
+}
+
+.field select,
+.field input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.field select:hover,
+.field input:hover {
+  border-color: var(--ink-faint);
+}
+
+/* ---------------------------------------------------------------------------
+   6. Switches
+   A real checkbox, restyled. It keeps native keyboard behaviour, native
+   announcement, and the focus ring from section 1.
+   --------------------------------------------------------------------------- */
+
+.switch-list {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.switch {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.switch:hover {
+  background: var(--surface-sunken);
+}
+
+.switch input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.1875rem 0 0;
+  accent-color: var(--accent);
+}
+
+.switch-text {
+  min-width: 0;
+}
+
+.switch-name {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.switch-note {
+  display: block;
+  color: var(--ink-faint);
+  font-size: var(--text-micro);
+  line-height: 1.45;
+}
+
+/* ---------------------------------------------------------------------------
+   7. The projection: estimated VRAM and the safety gates
+   The figure the reader came for. It is the only place in the app that uses
+   display type, because it is the only number that decides whether to launch.
+   --------------------------------------------------------------------------- */
+
+.figure {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.figure-value {
+  font-family: var(--font-display);
+  font-size: var(--text-figure);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.figure-unit {
+  color: var(--ink-muted);
+  font-size: var(--text-lead);
+}
+
+.figure-caption {
+  margin: var(--space-1) 0 0;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+}
+
+/* Headroom against the safety limit. The bar is redundant with the numbers on
+   purpose: the numbers are exact, the bar is instantly readable. */
+.headroom {
+  margin-top: var(--space-4);
+}
+
+.headroom-track {
+  position: relative;
+  height: 0.5rem;
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.headroom-fill {
+  height: 100%;
+  border-radius: var(--radius-control);
+}
+
+.headroom-fill[data-fit="safe"] {
+  background: var(--ok);
+}
+
+.headroom-fill[data-fit="tight"] {
+  background: var(--warn);
+}
+
+.headroom-fill[data-fit="unsafe"] {
+  background: var(--risk);
+}
+
+.headroom-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+}
+
+/* Where the memory goes. A total with no breakdown is not actionable: the
+   reader needs to know which control to move. */
+.breakdown {
+  margin: var(--space-4) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.breakdown-row {
+  display: block;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.breakdown-item {
+  min-width: 0;
+  font-size: var(--text-small);
+}
+
+.breakdown-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+/* A visual comparison of the server's allocation lines. These are separate
+   bars rather than a stacked total because an estimate can include safety
+   reserve or overlapping allocations: visual sum would imply false precision. */
+.allocation-track {
+  height: 0.35rem;
+  margin-top: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.allocation-fill {
+  display: block;
+  height: 100%;
+  min-width: 0.15rem;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.breakdown-detail {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--ink-faint);
+  font-size: var(--text-micro);
+}
+
+.breakdown-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   8. Status chips and gates
+   Status is never carried by hue alone. Every chip prints a word, so a reader
+   who cannot separate the hues reads the same result.
+   --------------------------------------------------------------------------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chip[data-tone="ok"] {
+  color: var(--ok);
+  background: var(--ok-soft);
+  border-color: var(--ok);
+}
+
+.chip[data-tone="warn"] {
+  color: var(--warn);
+  background: var(--warn-soft);
+  border-color: var(--warn);
+}
+
+.chip[data-tone="risk"] {
+  color: var(--risk);
+  background: var(--risk-soft);
+  border-color: var(--risk);
+}
+
+.chip[data-tone="neutral"] {
+  color: var(--ink-muted);
+  background: var(--surface-sunken);
+  border-color: var(--line-strong);
+}
+
+/* The glyph is a second, non-color signal: check, dash, cross. */
+.chip-mark {
+  font-family: var(--font-mono);
+}
+
+.gate-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gate {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.gate:last-child {
+  border-bottom: 0;
+}
+
+.gate-name {
+  min-width: 0;
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.gate-detail {
+  display: block;
+  color: var(--ink-faint);
+  font-size: var(--text-micro);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------------------
+   9. Buttons
+   Three roles only: the one primary action per view, secondary actions, and
+   destructive actions. More roles than that and none of them signal anything.
+   --------------------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--text-small);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--surface-sunken);
+}
+
+.button[data-role="primary"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.button[data-role="primary"]:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.button[data-role="danger"] {
+  border-color: var(--risk);
+  color: var(--risk);
+  background: var(--surface);
+}
+
+.button[data-role="danger"]:hover:not(:disabled) {
+  background: var(--risk-soft);
+}
+
+.button[data-role="quiet"] {
+  border-color: transparent;
+  background: none;
+  color: var(--ink-muted);
+}
+
+.button[data-role="quiet"]:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--surface-sunken);
+}
+
+.button-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ---------------------------------------------------------------------------
+   10. Launch bar
+   A shell row, pinned below the work area. Everything that spends GPU time
+   lives here and nowhere else, so there is exactly one place to look before a
+   run starts -- and it cannot scroll out of reach.
+   --------------------------------------------------------------------------- */
+
+.launch-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+}
+
+.launch-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.launch-line {
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The arming control. Deliberately a separate, explicit act from pressing
+   Start: a real training run costs hours of GPU, and one button should not be
+   able to spend that on a mis-click. */
+.arm {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  font-size: var(--text-small);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.arm[data-armed="true"] {
+  border-color: var(--warn);
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.arm input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--warn);
+}
+
+/* ---------------------------------------------------------------------------
+   11. Runs pane: receipts, checkpoints, comparison
+   --------------------------------------------------------------------------- */
+
+.run-list {
+  display: grid;
+  gap: 0;
+}
+
+.run-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.run-row:last-child {
+  border-bottom: 0;
+}
+
+.run-main {
+  min-width: 0;
+}
+
+.run-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.run-meta {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-1);
+  color: var(--ink-faint);
+  font-size: var(--text-micro);
+}
+
+.run-path {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  overflow-wrap: anywhere;
+}
+
+/* A wide table scrolls inside its own box so the page never scrolls sideways. */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+}
+
+.compare-table th,
+.compare-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.compare-table th {
+  color: var(--ink-muted);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.compare-table td:first-child {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+   12. Runtime pane: device, resources, dependencies
+   --------------------------------------------------------------------------- */
+
+.meter-list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.meter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+}
+
+.meter-name {
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.meter-value {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.meter-track {
+  grid-column: 1 / -1;
+  height: 0.375rem;
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+}
+
+.meter-fill[data-tone="ok"] {
+  background: var(--ok);
+}
+
+.meter-fill[data-tone="warn"] {
+  background: var(--warn);
+}
+
+.meter-fill[data-tone="neutral"] {
+  background: var(--ink-faint);
+}
+
+.dependency-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-2);
+}
+
+.dependency {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  min-width: 0;
+}
+
+.dependency-name {
+  min-width: 0;
+  font-size: var(--text-small);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dependency-version {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+}
+
+.definition-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.definition-term {
+  color: var(--ink-muted);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.definition-value {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------------------
+   13. Messages and empty states
+   --------------------------------------------------------------------------- */
+
+.notice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  margin-bottom: var(--space-4);
+}
+
+.notice[data-tone="warn"] {
+  border-color: var(--warn);
+  background: var(--warn-soft);
+}
+
+.notice[data-tone="risk"] {
+  border-color: var(--risk);
+  background: var(--risk-soft);
+}
+
+.notice-text {
+  min-width: 0;
+  font-size: var(--text-small);
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  padding: var(--space-6) var(--space-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-panel);
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.empty-title {
+  margin: 0;
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.empty-note {
+  margin: var(--space-2) auto 0;
+  max-width: 34rem;
+  font-size: var(--text-small);
+}
+
+/* Screen-reader-only text, for the places where a visual cue carries meaning
+   that a non-visual reader would otherwise miss. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   15. Layer map
+   The 3D scene and the controls around it. The canvas is a view onto data that
+   is also present as a table, so nothing here is the only route to an action.
+   --------------------------------------------------------------------------- */
+
+.layers-pane {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Controls that sit inside a panel header rather than in a form column. */
+.inline-field {
+  display: block;
+  min-width: 0;
+}
+
+.inline-switch {
+  padding: var(--space-1) var(--space-2);
+}
+
+.metric-row-controls {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+/* A segmented control: one choice from a small, stable set, all visible at
+   once. Radio semantics come from aria-pressed on real buttons. */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.segment {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.segment:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.segment[aria-pressed="true"] {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* Marks a metric as estimated rather than measured, in text rather than by
+   styling alone, because the distinction changes how the number should be
+   used. */
+.segment-tag {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 400;
+}
+
+/* The scene. A fixed aspect would waste space on a wide window and crush the
+   stack on a narrow one, so it takes a share of the viewport between bounds. */
+.scene-frame {
+  position: relative;
+  height: clamp(20rem, 46vh, 38rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.scene-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The pointer drags the camera; without this the browser would try to
+     pan-scroll the page on touch instead. */
+  touch-action: none;
+  cursor: grab;
+}
+
+.scene-canvas:active {
+  cursor: grabbing;
+}
+
+/* Covers the canvas for the two states where it has nothing to show. */
+.scene-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  text-align: center;
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+}
+
+/* Overlay layers on top of the canvas: world-anchored labels and the hover
+   readout. Both are DOM so they inherit the app's type and theme; drawing text
+   in WebGL would need a glyph atlas and would match neither. */
+.scene-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scene-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 var(--space-1);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  white-space: nowrap;
+  /* The scene behind is busy; a matched ground keeps the text readable without
+     drawing a box around every label. */
+  background: color-mix(in srgb, var(--surface-sunken) 78%, transparent);
+  border-radius: var(--radius-control);
+}
+
+.scene-label[data-kind="role"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.scene-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  margin: var(--space-3) 0 0 var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--shadow-raised);
+  font-size: var(--text-micro);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.scene-tooltip strong {
+  font-size: var(--text-small);
+}
+
+.scene-tooltip span {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+}
+
+.scene-tooltip-value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.scene-legend {
+  display: grid;
+  grid-template-columns: auto minmax(0, 12rem) auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.legend-label {
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+/* The same three stops the shader uses, so the key and the scene cannot drift. */
+.legend-ramp {
+  height: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: linear-gradient(to right, var(--ramp-0), var(--ramp-1), var(--ramp-2));
+}
+
+.legend-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  grid-column: 2;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+}
+
+.scene-legend .field-hint {
+  grid-column: 1 / -1;
+}
+
+.scope-summary {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+/* A selected row is marked by weight and a rule as well as tint, and its
+   button reads "In scope", so the state is never carried by colour alone. */
+.layer-table tr[data-selected] {
+  background: var(--accent-soft);
+}
+
+.layer-table tr[data-selected] th {
+  box-shadow: inset 0.1875rem 0 0 var(--accent);
+}
+
+.layer-table th[scope="row"] {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   14. Narrow layouts
+   One breakpoint, placed where this layout actually breaks: the point at which
+   the projection column can no longer hold a readable measure beside the form.
+   Everything above absorbs the rest without a media query.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 60rem) {
+  .configure {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked, the projection is no longer beside the form, so pinning it would
+     cover the controls instead of accompanying them. */
+  .projection-column {
+    position: static;
+  }
+
+  .pane {
+    padding: var(--space-4);
+  }
+
+  .app-header,
+  .tabs,
+  .launch-bar {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .launch-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The scene loses its side-by-side context here, so it gives back height
+     rather than dominating a narrow window. */
+  .scene-frame {
+    height: clamp(16rem, 38vh, 24rem);
+  }
+
+  .scene-legend {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .legend-ends {
+    grid-column: 1;
+  }
+}
+
+/* Honour a reader who has asked for less motion. The app has no decorative
+   animation, so this only affects scroll behaviour and any future transition. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

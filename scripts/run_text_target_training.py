@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import inspect
 import json
 import math
 import time
@@ -148,6 +149,8 @@ def training_arguments(cls: Any, args: argparse.Namespace, output_dir: Path) -> 
         "bf16": args.precision == "bf16",
         "fp16": args.precision == "fp16",
     }
+    if "logging_dir" not in inspect.signature(cls.__init__).parameters:      # transformers 5 removed this setting; TensorBoard files then go to <output_dir>/runs
+        kwargs.pop("logging_dir", None)
     return cls(**kwargs)
 
 
