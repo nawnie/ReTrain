@@ -47,6 +47,45 @@ Gemma training currently starts through `scripts/run_gemma4_qlora.py`, rather
 than the Configure tab. Alignment/RL choices in the new console remain blocked
 because the public runner supports full SFT, LoRA, and QLoRA.
 
+## Live console screenshots
+
+These screenshots show the Live console observing an existing training run.
+They include the workstation's local paths and GPU model. See
+[the Live console guide](docs/LIVE_CONSOLE.md) for the telemetry format and
+the limits of the learning and layer measurements.
+
+### Overview — dark theme
+
+![Live console overview in the dark theme](docs/screenshots/live-overview-dark.png)
+
+### Overview — light theme
+
+![Live console overview in the light theme](docs/screenshots/live-overview-light.png)
+
+### Loss and training signals
+
+![Training loss, gradient size, and learning-rate charts](docs/screenshots/live-loss.png)
+
+### Learning checks
+
+![Baseline and per-epoch learning checks with per-skill scores](docs/screenshots/live-learning.png)
+
+### Layer signals
+
+![Per-layer gradient and adapter-size measurements](docs/screenshots/live-layers.png)
+
+### Held-out answers
+
+![Reference answers compared with baseline and per-epoch model replies](docs/screenshots/live-answers.png)
+
+### Full Live page
+
+![Full Live console page in the dark theme](docs/screenshots/live-full-dark.png)
+
+### Narrow layout
+
+![Live console in a narrow pane](docs/screenshots/live-narrow.png)
+
 ## Part of a larger practical stack
 
 - [AIWF Studio](https://github.com/nawnie/AIWF-Studio) — local creative AI.
