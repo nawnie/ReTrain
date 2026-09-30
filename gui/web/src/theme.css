@@ -1,0 +1,192 @@
+/* ===========================================================================
+   ReTrain theme tokens.
+
+   This file is the ONLY place in the app that contains a color literal. Every
+   component rule in app.css references a role token from here, which is what
+   makes a second theme possible at all: a hex written inside a component rule
+   is identical in every theme, so it can only ever be correct in one of them.
+
+   Token names describe the ROLE, never the appearance. `--ink-muted` survives
+   a palette change; `--warm-grey` becomes a lie the moment the palette shifts.
+
+   Three theme states are supported, because that is how a browser actually
+   behaves:
+     1. no preference expressed  -> the light palette on :root
+     2. system prefers dark      -> the dark palette, unless the reader forced light
+     3. reader chose explicitly  -> data-theme on <html> wins over the system
+
+   Every color is defined in state 1 and only overridden in 2 and 3. Nothing
+   gets its sole definition inside a media query, or it would be undefined in
+   whichever state was forgotten.
+
+   Contrast was measured, not judged. Every ink/surface pair below clears WCAG
+   AA (4.5:1) in both themes; the worst pair is --ink-faint on --surface-sunken
+   at 4.62:1.
+   =========================================================================== */
+
+:root {
+  /* ---- Surfaces: the page, raised panels, and recessed wells --------------- */
+  --bg: #f4f2ee;
+  --surface: #fbfaf9;
+  --surface-sunken: #eae7e1;
+
+  /* ---- Rules and borders -------------------------------------------------- */
+  --line: #d9d4cb;
+  --line-strong: #b9b2a5;
+
+  /* ---- Text ramp: primary reading, secondary, and de-emphasised ------------ */
+  --ink: #1c1a17;
+  --ink-muted: #5a554c;
+  --ink-faint: #6b665c;
+
+  /* ---- Accent. Reserved for the primary action and the focus ring.
+         Deliberately not a status color, so it can never be misread as one. -- */
+  --accent: #8a4b1f;
+  --accent-ink: #fdfbf8;
+  --accent-soft: #f0e4d9;
+
+  /* ---- Status. Always paired with a word in the markup, never hue alone,
+         because red/green is the common color-vision axis. ------------------- */
+  --ok: #2f6a4a;
+  --warn: #85610f;
+  --risk: #a32f2c;
+  --ok-soft: #e2ece6;
+  --warn-soft: #f2eada;
+  --risk-soft: #f5e3e2;
+
+
+  /* ---- Sequential ramp for the layer map. Three stops rather than two so the
+         middle of the range stays distinguishable; interpolating a single pair
+         across a wide range collapses everything in the middle into mud.
+         Read by the WebGL scene through getComputedStyle, so the 3D view and
+         the DOM around it are coloured from one source. ------------------- */
+  --ramp-0: #ded8cd;
+  --ramp-1: #c08a58;
+  --ramp-2: #7a3f18;
+
+  /* ---- Spacing scale. One 4px base unit expressed in rem, so a reader who
+         raises their browser font size gets a layout that grows with it.
+         Every edge in the app is a step on this scale; that is what makes
+         unrelated components line up without anyone positioning them. -------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  /* ---- Radii by surface role, not one global rounding ---------------------- */
+  --radius-control: 0.25rem;
+  --radius-panel: 0.5rem;
+
+  /* ---- Type. Segoe is the platform face on the Windows machines this console
+         runs on; Cascadia is its companion mono. Both are stated with real
+         fallbacks so a missing face degrades instead of disappearing. -------- */
+  --font-ui: "Segoe UI Variable Text", "Segoe UI", "Noto Sans", sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", "Noto Sans", sans-serif;
+  --font-mono: "Cascadia Code", "Cascadia Mono", ui-monospace, "Consolas", monospace;
+
+  /* ---- Fluid type. clamp() removes the need for font-size breakpoints and
+         guarantees the value never degrades past either bound. --------------- */
+  --text-micro: 0.6875rem;
+  --text-small: 0.8125rem;
+  --text-body: clamp(0.875rem, 0.83rem + 0.18vw, 0.9375rem);
+  --text-lead: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-title: clamp(1.125rem, 1.03rem + 0.4vw, 1.375rem);
+  --text-figure: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem);
+
+  /* ---- Elevation. Reserved for surfaces that genuinely float over content.
+         Flat panels stay flat, so a shadow still means something. ------------ */
+  --shadow-raised: 0 0.0625rem 0.125rem rgba(28, 26, 23, 0.10);
+  --shadow-float: 0 -0.125rem 0.75rem rgba(28, 26, 23, 0.10);
+
+  /* ---- The declared scheme drives native chrome: select popups, number
+         spinners, checkbox glyphs, scrollbars, and the canvas backdrop.
+         "light dark" says this surface is built for both. ------------------- */
+  color-scheme: light dark;
+
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font-ui);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dark palette, re-derived against the dark surfaces rather than copied from
+   the light theme. Reusing a light-theme literal on a dark background is the
+   single most common way a second theme becomes unreadable. Guarded with
+   :not([data-theme="light"]) so an explicit light choice still wins here. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16171a;
+    --surface: #1e2024;
+    --surface-sunken: #121316;
+
+    --line: #32353b;
+    --line-strong: #4a4e56;
+
+    --ink: #ecebe8;
+    --ink-muted: #a8a49c;
+    --ink-faint: #8b8880;
+
+    --accent: #e0925f;
+    --accent-ink: #1a1207;
+    --accent-soft: #33251a;
+
+    --ok: #79c79c;
+    --warn: #d9b467;
+    --risk: #ef8f88;
+    --ok-soft: #1b2a22;
+    --warn-soft: #2b2517;
+    --risk-soft: #2e1c1b;
+
+    --ramp-0: #2b2f36;
+    --ramp-1: #9a6f45;
+    --ramp-2: #f2a86d;
+
+    --shadow-raised: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.4);
+    --shadow-float: 0 -0.125rem 0.75rem rgba(0, 0, 0, 0.45);
+
+    color-scheme: dark;
+  }
+}
+
+/* The reader's explicit choice. Declared for both directions so the toggle
+   wins whichever way the system preference happens to point. */
+:root[data-theme="dark"] {
+  --bg: #16171a;
+  --surface: #1e2024;
+  --surface-sunken: #121316;
+
+  --line: #32353b;
+  --line-strong: #4a4e56;
+
+  --ink: #ecebe8;
+  --ink-muted: #a8a49c;
+  --ink-faint: #8b8880;
+
+  --accent: #e0925f;
+  --accent-ink: #1a1207;
+  --accent-soft: #33251a;
+
+  --ok: #79c79c;
+  --warn: #d9b467;
+  --risk: #ef8f88;
+  --ok-soft: #1b2a22;
+  --warn-soft: #2b2517;
+  --risk-soft: #2e1c1b;
+
+  --ramp-0: #2b2f36;
+  --ramp-1: #9a6f45;
+  --ramp-2: #f2a86d;
+
+  --shadow-raised: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.4);
+  --shadow-float: 0 -0.125rem 0.75rem rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
