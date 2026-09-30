@@ -224,6 +224,8 @@ def training_arguments(cls: Any, *, output_dir: Path, args: argparse.Namespace) 
     }
     signature = inspect.signature(cls.__init__)
     params = signature.parameters
+    if "logging_dir" not in params:
+        kwargs.pop("logging_dir", None)
     if args.save_checkpoints:
         kwargs["save_steps"] = args.max_steps
         kwargs["save_total_limit"] = 1
