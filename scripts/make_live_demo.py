@@ -68,7 +68,7 @@ def wrong_answer(expected: str, rnd: random.Random) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", type=Path, default=Path(r"F:\_Projects\GBA-AI\out\datasets\basic-v0\train.jsonl"))
+    ap.add_argument("--dataset", type=Path, default=None, help="Optional JSONL dataset; otherwise use synthetic demo questions.")
     a = ap.parse_args()
     rnd = random.Random(20260929)
     run_id = "demo-gemma4-12b"

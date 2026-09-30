@@ -14,6 +14,14 @@ Start the console with `launch_retrain_web.bat` (or `npm run dev` in `gui/web`, 
 `uvicorn gui.api.app:app`), then choose **Live**. Restart the console after updating: the API gained new
 `/api/retrain/live/*` routes.
 
+The desktop console is additive to the existing public dashboard. Its API
+bridge and dependency-health helper are included in this checkout. Model
+discovery uses the repository's `models/` folder unless `RETRAIN_MODEL_ROOT`
+is set. The desktop shell uses the project's `.venv` and does not require Codex.
+Gemma training starts with the runner script; starting that lane from Configure
+is not wired yet. Alignment/RL selections remain blocked in the console because
+the public runner supports full SFT, LoRA, and QLoRA.
+
 ## What each card shows
 
 | Card | Answers |

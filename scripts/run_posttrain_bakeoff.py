@@ -221,6 +221,7 @@ def training_arguments(cls: Any, *, output_dir: Path, args: argparse.Namespace) 
         "remove_unused_columns": False,
         "gradient_checkpointing": args.gradient_checkpointing,
         "optim": args.optim,
+        "lr_scheduler_type": getattr(args, "lr_scheduler_type", "linear"),
     }
     signature = inspect.signature(cls.__init__)
     params = signature.parameters
@@ -648,6 +649,7 @@ def main() -> int:
     parser.add_argument("--learning-rate", type=float, default=2e-6)
     parser.add_argument("--precision", choices=["bf16", "fp16"], default="bf16")
     parser.add_argument("--optim", default="adafactor")
+    parser.add_argument("--lr-scheduler-type", choices=["linear", "cosine", "constant"], default="linear")
     parser.add_argument("--gradient-checkpointing", action="store_true", default=True)
     parser.add_argument("--no-gradient-checkpointing", action="store_false", dest="gradient_checkpointing")
     parser.add_argument("--save-final", action="store_true", default=True)

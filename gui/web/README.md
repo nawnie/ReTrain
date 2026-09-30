@@ -5,7 +5,7 @@ that runs it.
 
 ## Running it
 
-**As the desktop app** — the `RNV1 ReTrain` desktop shortcut, or:
+**As the desktop app**, from the repository root:
 
 ```bash
 launch_retrain_web.bat
@@ -17,17 +17,17 @@ running first.
 **In a browser, for development:**
 
 ```bash
-npm install
+npm ci
 npm run dev        # http://localhost:4173, proxies /api/retrain to the backend
 ```
 
 The backend then has to be started separately:
 
 ```bash
-python -m uvicorn gui.api.app:app --host 127.0.0.1 --port 8787 --app-dir F:\_Projects\ReTrain
+python -m uvicorn gui.api.app:app --host 127.0.0.1 --port 8787
 ```
 
-Point the dev proxy elsewhere with `RETRAIN_API_TARGET`; point the desktop shell
+Run the backend command from the repository root. Point the dev proxy elsewhere with `RETRAIN_API_TARGET`; point the desktop shell
 elsewhere with `RETRAIN_API_HOST` and `RETRAIN_API_PORT`.
 
 ## The desktop shell (`electron/`)
@@ -47,13 +47,10 @@ header in both themes. The header reserves space for them using
 **The backend is supervised, and only ours is stopped.** If something already
 answers on the API port it is adopted — an operator's own uvicorn, or one
 orphaned by a shell that was force-killed. Only a backend this shell started is
-ever terminated, and the whole process tree goes, because the real uvicorn is a
-grandchild of the no-console host.
+ever terminated, together with its child processes.
 
 **Failures are diagnosable.** The standing backend must run under
-`pythonw` + `run_noconsole.py`, and `pythonw` is the GUI-subsystem interpreter
-with no valid standard handles — so piping it produces an empty log file. (The
-previous shell had this hole too; its `electron-api.log` is 0 bytes.) Instead the
+the project's `pythonw`, which has no console standard handles. Instead the
 import is preflighted in a normal short-lived interpreter whose stderr *can* be
 read, and uvicorn is given a `--log-config` that writes
 `training/gui_runs/desktop-api.log` itself.
@@ -118,8 +115,9 @@ deficiency reads the same result.
 
 ## Verifying it
 
-Contrast was measured, not judged; the worst pair is `--ink-faint` on
-`--surface-sunken` at 4.62:1. The three gates below all pass with exit 0:
+The original local design review recorded a worst contrast pair of
+`--ink-faint` on `--surface-sunken` at 4.62:1. It also recorded the three optional
+checks below passing; these are historical results, not fresh-checkout checks:
 
 ```bash
 # Render legibility: clipped roots, rigid layout, hardcoded colour, spacing scale
@@ -135,7 +133,9 @@ py -3.12 <wren>/skills/wren-avoid-ai-design/scripts/render_frontend.py \
   --paths "#configure,#runs,#runtime"
 ```
 
-`<wren>` is `F:\Shawn-Core\specialists\wren-site-builder\<version>`.
+`<wren>` is an optional Wren specialist installation. These design-review tools
+are not required to install or launch the console. The standard build check is
+`npm run build` in `gui/web`.
 
 ## Files
 

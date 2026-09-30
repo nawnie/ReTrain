@@ -6,14 +6,14 @@ rem  Builds the frontend and starts the Electron shell. The shell starts and
 rem  supervises the local FastAPI backend itself, so nothing else needs to be
 rem  running first and no second console window is opened for it.
 rem
-rem  The older gui\react app is untouched and still has its own launcher.
+rem  The existing frontend keeps its own launcher.
 rem ===========================================================================
 setlocal EnableExtensions
 cd /d "%~dp0"
 
 rem -- The Python environment the backend runs in -----------------------------
 if not exist ".venv\Scripts\python.exe" (
-    echo Installing the ReTrain Python 3.12 environment on F:...
+    echo Installing the local ReTrain Python environment...
     powershell -NoProfile -ExecutionPolicy Bypass -File "scripts\install_retrain.ps1" -SkipFrontend
     if errorlevel 1 (
         echo Python environment setup failed.
@@ -34,7 +34,7 @@ if errorlevel 1 (
 rem -- Frontend dependencies --------------------------------------------------
 if not exist "node_modules" (
     echo Installing frontend dependencies...
-    call npm install
+    call npm ci
     if errorlevel 1 (
         echo Dependency install failed.
         pause

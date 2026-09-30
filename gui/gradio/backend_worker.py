@@ -20,7 +20,7 @@ ACTIVE_DATASET_VERSION = "qwen3.5-2b-Research-v1"
 DEFAULT_OUTPUT_ROOT = ROOT / "training" / "gui_runs"
 DEFAULT_DATASET_PATH = ROOT / "training" / "posttrain_bakeoff" / "data"
 DEFAULT_RECEIPT_ROOT = ROOT / "training" / "gui_runs" / "receipts"
-DEFAULT_MODEL_ROOT = Path(os.environ.get("RETRAIN_MODEL_ROOT", "F:/Ai_Models/hf/posttrain_candidates"))
+DEFAULT_MODEL_ROOT = Path(os.environ.get("RETRAIN_MODEL_ROOT", str(ROOT / "models")))
 DEFAULT_ENGINE_ROOT = ROOT / "engines"
 DEFAULT_DATASET_EXPORT_ROOT = ROOT / "training" / "gui_runs" / "datasets"
 
@@ -39,8 +39,8 @@ _ACTIVE_JOBS: dict[int, dict[str, Any]] = {}
 
 SUPERVISED_METHODS = {"sft", "full_sft", "lora", "qlora"}
 TRL_METHODS = {"dpo", "grpo", "reward_model", "kto", "rloo"}
-RUNNER_METHODS = SUPERVISED_METHODS | TRL_METHODS
-BLOCKED_METHODS = {"ppo"}
+RUNNER_METHODS = SUPERVISED_METHODS
+BLOCKED_METHODS = TRL_METHODS | {"ppo"}
 
 
 MODEL_PRESETS: dict[str, dict[str, Any]] = {
@@ -563,7 +563,7 @@ def validate_training_config(payload: dict[str, Any] | None) -> dict[str, Any]:
             _gate(
                 "Training runner",
                 False,
-                f"{config.method.upper()} is not available in this installed TRL runtime",
+                f"{config.method.upper()} is not implemented by this checkout's training runner",
                 fail_state="blocked",
             )
         )

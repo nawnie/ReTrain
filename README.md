@@ -25,6 +25,9 @@ Training tools often assume a clean Linux server, a large budget, and a research
 - readiness and estimated-VRAM checks;
 - dry-run planning before weights are loaded;
 - local logs, receipts, and TensorBoard summaries.
+- a Live console with loss charts, per-epoch learning checks, layer signals,
+  GPU history, and held-out answer comparisons;
+- a script-driven Gemma 4 Unified QLoRA lane with answer-only loss.
 
 Future modes are documented as future modes. This repo does not present a roadmap as a working button.
 
@@ -36,6 +39,13 @@ Future modes are documented as future modes. This repo does not present a roadma
 ~~~
 
 Then open http://127.0.0.1:8000.
+
+For the new desktop console, run `launch_retrain_web.bat`. Browser development
+and the telemetry format are documented in [the Live console guide](docs/LIVE_CONSOLE.md)
+and [the console README](gui/web/README.md). The Live tab only observes runs.
+Gemma training currently starts through `scripts/run_gemma4_qlora.py`, rather
+than the Configure tab. Alignment/RL choices in the new console remain blocked
+because the public runner supports full SFT, LoRA, and QLoRA.
 
 ## Part of a larger practical stack
 

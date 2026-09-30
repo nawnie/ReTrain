@@ -17,6 +17,8 @@ training/EveryDream2trainer/
 training/run_state/
 training/runs/
 training/gui_runs/
+training/live_runs/
+training/live_demo/
 training/posttrain_smoke/runs/
 *.safetensors
 *.bin

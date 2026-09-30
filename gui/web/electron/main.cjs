@@ -17,7 +17,6 @@
 const { app, BrowserWindow, ipcMain, nativeTheme, net, protocol, shell } = require('electron')
 const { spawn, spawnSync } = require('node:child_process')
 const fs = require('node:fs')
-const os = require('node:os')
 const path = require('node:path')
 const { pathToFileURL } = require('node:url')
 
@@ -80,9 +79,7 @@ async function apiReady() {
 /**
  * Start uvicorn, unless the operator already has it running.
  *
- * Launched through pythonw + run_noconsole.py because a standing helper on this
- * machine must not allocate a console window; a plain python.exe or a cmd
- * wrapper flashes a black window and leaves a conhost behind.
+ * Launched through the project's pythonw interpreter to keep the API headless.
  *
  * Returns a reason string on failure rather than throwing. A backend that will
  * not start is not a reason to deny the operator the window: the UI degrades to
@@ -93,9 +90,8 @@ async function startBackend() {
 
   const pythonExe = path.join(projectRoot, '.venv', 'Scripts', 'python.exe')
   const pythonwExe = path.join(projectRoot, '.venv', 'Scripts', 'pythonw.exe')
-  const noConsoleHost = path.join(os.homedir(), '.codex', 'scripts', 'run_noconsole.py')
 
-  for (const required of [pythonExe, pythonwExe, noConsoleHost]) {
+  for (const required of [pythonExe, pythonwExe]) {
     if (!fs.existsSync(required)) return `Required runtime is missing: ${required}`
   }
 
@@ -109,11 +105,8 @@ async function startBackend() {
 
   // Preflight the import in a normal, short-lived python.exe.
   //
-  // The standing backend has to run under pythonw + run_noconsole (no console
-  // window), and pythonw is the GUI-subsystem interpreter: it has no valid
-  // standard handles, so the pipes Electron attaches never reach the uvicorn
-  // grandchild. Piping that chain produces an empty log file -- verified, and
-  // the previous shell had the same silent hole.
+  // pythonw has no console standard handles. Log the API directly to a file;
+  // use python.exe only for this bounded import check that captures errors.
   //
   // An import-time failure (a missing dependency, a syntax error in the API) is
   // exactly the case where a log matters most, and it is a traceback on stderr
@@ -176,9 +169,6 @@ async function startBackend() {
   backendProcess = spawn(
     pythonwExe,
     [
-      noConsoleHost,
-      '--',
-      pythonExe,
       '-m',
       'uvicorn',
       'gui.api.app:app',
@@ -204,8 +194,7 @@ async function startBackend() {
 /** Stop only a backend this shell started. An operator's own uvicorn is left alone. */
 function stopOwnedBackend() {
   if (!backendProcess || backendProcess.exitCode !== null) return
-  // The real uvicorn is a grandchild of the no-console host, so the whole tree
-  // has to go; terminating the host alone orphans the server on its port.
+  // Stop the owned API and any children it created.
   spawnSync('taskkill.exe', ['/pid', String(backendProcess.pid), '/t', '/f'], {
     windowsHide: true,
     stdio: 'ignore',
