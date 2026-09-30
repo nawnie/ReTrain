@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 import sys
 from dataclasses import asdict
 from pathlib import Path
@@ -77,3 +78,47 @@ def test_unimplemented_console_methods_are_blocked(method, dry_run, monkeypatch,
     gate = next(item for item in result["gates"] if item["gate"] == "Training runner")
     assert gate["state"] == "blocked"
     assert "not implemented" in gate["detail"]
+
+
+def test_engine_install_uses_requirements_present_in_public_checkout(monkeypatch, tmp_path):
+    commands = []
+    package = {"package": "torch", "available": False}
+    status = {
+        "ready": False,
+        "missing": ["torch"],
+        "packages": [package],
+        "marker": str(tmp_path / "installed.json"),
+    }
+    monkeypatch.setattr(worker, "ensure_mvp_folders", lambda: {})
+    monkeypatch.setattr(worker, "DEFAULT_ENGINE_ROOT", tmp_path)
+    monkeypatch.setattr(worker, "engine_status", lambda *args: status)
+    monkeypatch.setattr(worker, "clear_dependency_probe_cache", lambda: None)
+
+    def fake_run(argv, **kwargs):
+        commands.append(argv)
+        return subprocess.CompletedProcess(argv, 0, stdout="mocked dependency installation")
+
+    monkeypatch.setattr(worker.subprocess, "run", fake_run)
+    result = worker.install_engine(execute=True)
+    assert result["receipt"]["pip_exit_code"] == 0
+    assert commands
+    for argv in commands:
+        assert "-e" not in argv, "the public checkout has no editable package metadata"
+        requirements = [Path(argv[index + 1]) for index, item in enumerate(argv[:-1]) if item == "-r"]
+        assert requirements
+        assert all(path.is_file() for path in requirements)
+    assert {path.name for argv in commands for index, item in enumerate(argv[:-1]) if item == "-r" for path in [Path(argv[index + 1])]} == {
+        "requirements.txt", "requirements-training.txt",
+    }
+
+
+def test_supervised_engine_is_ready_without_optional_trl(monkeypatch, tmp_path):
+    def public_packages(packages):
+        return [{"package": name, "available": name != "trl"} for name, label in packages]
+
+    monkeypatch.setattr(worker, "inspect_packages", public_packages)
+    monkeypatch.setattr(worker, "DEFAULT_ENGINE_ROOT", tmp_path)
+    status = worker.engine_status("qlora")
+    assert status["ready"] is True
+    assert status["missing"] == []
+    assert "trl" not in {item["package"] for item in status["packages"]}

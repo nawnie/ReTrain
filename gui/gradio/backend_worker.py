@@ -87,7 +87,6 @@ ENGINE_PROFILES: dict[str, dict[str, Any]] = {
             "datasets",
             "accelerate",
             "peft",
-            "trl",
             "bitsandbytes",
             "sentencepiece",
             "safetensors",
@@ -324,8 +323,7 @@ def install_engine(engine_key: str = "qlora", *, execute: bool = False) -> dict[
     }
     if execute and status_before["missing"]:
         commands = [
-            [sys.executable, "-m", "pip", "install", "-r", str(ROOT / "requirements-cuda-cu132.txt")],
-            [sys.executable, "-m", "pip", "install", "-e", f"{ROOT}[training]"],
+            [sys.executable, "-m", "pip", "install", "-r", str(ROOT / "requirements.txt"), "-r", str(ROOT / "requirements-training.txt")],
         ]
         command_results = []
         for argv in commands:
