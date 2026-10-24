@@ -1,6 +1,6 @@
 # ReTrain-owned CUDA training stack. These pins match the validated
 # post-training environment; optional wheelhouses are configured at install time.
-torch==2.11.0+cu128
+torch==2.13.0
 transformers==5.12.1
 accelerate==1.14.0
 peft==0.19.1
